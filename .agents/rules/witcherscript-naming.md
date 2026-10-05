@@ -21,7 +21,7 @@ tags: witcherscript, naming, architecture
 
 **Impact: HIGH**
 
-The public mod name is `Witcher3ModsAchivementPanel`. Its installable folder is `modWitcher3ModsAchivementPanel`; retain the loader-required `mod` prefix.
+The public mod name is `Witcher3ModsAchievementPanel`. Its installable folder is `modWitcher3ModsAchievementPanel`; retain the loader-required `mod` prefix.
 
 **Incorrect:**
 
@@ -32,7 +32,7 @@ Ship AchievementPanel without the mod prefix.
 **Correct:**
 
 ```text
-Ship modWitcher3ModsAchivementPanel.
+Ship modWitcher3ModsAchievementPanel.
 ```
 
 ## 2. Namespace custom symbols

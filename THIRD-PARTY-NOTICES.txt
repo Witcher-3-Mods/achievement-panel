@@ -1,6 +1,6 @@
 Scope and provenance:
 These notices cover third-party materials in src/assets and the current
-src/modWitcher3ModsAchivementPanel package, including source assets and their
+src/modWitcher3ModsAchievementPanel package, including source assets and their
 counterparts embedded in the compiled mod.
 The repository-root THIRD-PARTY-NOTICES.txt is the authoritative copy.
 Keep the packaged THIRD-PARTY-NOTICES.txt identical so these notices also

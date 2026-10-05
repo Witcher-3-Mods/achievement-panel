@@ -1,7 +1,7 @@
 param([Parameter(Mandatory=$true)][string]$OutputPath)
 $ErrorActionPreference = 'Stop'
 $Witcher3ModsRoot = Split-Path $PSScriptRoot -Parent
-$Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchivementPanel'
+$Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchievementPanel'
 $Witcher3ModsExpected = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','install.cmd','uninstall.cmd','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
 $Witcher3ModsExpected += @('AchievementCatalog','AchievementPresenter','AchievementReadout','AchievementTracking','GameQueries','Localization','MenuIntegration') | ForEach-Object { 'content/scripts/local/Witcher3Mods' + $_ + '.ws' }
 if ((Get-FileHash "$Witcher3ModsRoot/LICENSE").Hash -ne (Get-FileHash "$Witcher3ModsPackage/LICENSE").Hash) { throw 'Root and packaged licenses differ.' }
@@ -28,8 +28,8 @@ try {
     if ($Witcher3ModsMembers.Count -ne $Witcher3ModsExpected.Count) { throw 'Archive member count mismatch.' }
     foreach ($Witcher3ModsMember in $Witcher3ModsMembers) {
         $Witcher3ModsRelative = $Witcher3ModsMember.FullName.Replace('\','/')
-        if (-not $Witcher3ModsRelative.StartsWith('modWitcher3ModsAchivementPanel/')) { throw 'Missing installable top-level folder.' }
-        $Witcher3ModsRelative = $Witcher3ModsRelative.Substring('modWitcher3ModsAchivementPanel/'.Length)
+        if (-not $Witcher3ModsRelative.StartsWith('modWitcher3ModsAchievementPanel/')) { throw 'Missing installable top-level folder.' }
+        $Witcher3ModsRelative = $Witcher3ModsRelative.Substring('modWitcher3ModsAchievementPanel/'.Length)
         if ($Witcher3ModsRelative -notin $Witcher3ModsExpected) { throw 'Unexpected ZIP path.' }
         $Witcher3ModsStream = $Witcher3ModsMember.Open()
         $Witcher3ModsSha = [Security.Cryptography.SHA256]::Create()

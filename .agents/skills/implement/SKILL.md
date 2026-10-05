@@ -5,7 +5,7 @@ description: Implement Witcher 3 mod changes through toolchain preflight, native
 
 # Implement
 
-Work from the repository root. The deliverable is `src/modWitcher3ModsAchivementPanel`, not `.build`. Follow these phases in order; do not announce readiness until the installable folder is complete.
+Work from the repository root. The deliverable is `src/modWitcher3ModsAchievementPanel`, not `.build`. Follow these phases in order; do not announce readiness until the installable folder is complete.
 
 ## Phase 1 — Toolchain and scope preflight
 
@@ -36,7 +36,7 @@ Native Java/REDkit commands may require execution approval. The cook script also
 
 Use current files, not old chat claims, as the starting point:
 
-- Mod runtime: `src/modWitcher3ModsAchivementPanel/content/scripts/local/*.ws`. Menu lifecycle lives in `Witcher3ModsMenuIntegration.ws`; catalogue, readout, presentation and HUD tracking are separate modules.
+- Mod runtime: `src/modWitcher3ModsAchievementPanel/content/scripts/local/*.ws`. Menu lifecycle lives in `Witcher3ModsMenuIntegration.ws`; catalogue, readout, presentation and HUD tracking are separate modules.
 - Translations: packaged `locales/pl.json` and `locales/en.json`; these generate a WitcherScript lookup and are not parsed as JSON at runtime.
 - Flash patches: `tools/Build-Witcher3ModsFlash.ps1` and `tools/flash/*.as.inc`; icon source images/manifest are fixed offline inputs in `src/assets/achievement-icons`.
 - Native WitcherScript: `<Game>/content/content0/scripts`; start with `game/gui/menus`, `game/gui/flashScriptImports.ws`, and the owner of the called API. Verify signatures, visibility and native event routing.
@@ -83,7 +83,7 @@ Once the complete folder is ready, before unrelated follow-up work, say:
 
 > Implementacja zakończona — folder moda jest gotowy do sprawdzenia w grze.
 
-Link/name `src/modWitcher3ModsAchivementPanel`, identify a diagnostic build as diagnostic, state whether the game installation was changed, and give the concrete runtime test needed. Build readiness is not confirmed bug resolution or a release/audit verdict.
+Link/name `src/modWitcher3ModsAchievementPanel`, identify a diagnostic build as diagnostic, state whether the game installation was changed, and give the concrete runtime test needed. Build readiness is not confirmed bug resolution or a release/audit verdict.
 
 ## Phase 6 — Final handoff
 

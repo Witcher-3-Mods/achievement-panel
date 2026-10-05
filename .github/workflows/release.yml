@@ -28,7 +28,7 @@ jobs:
     env:
       RELEASE_SHA: ${{ github.sha }}
       MOD_TITLE: Achievement Panel
-      MOD_ARCHIVE: Witcher3ModsAchivementPanel
+      MOD_ARCHIVE: Witcher3ModsAchievementPanel
     steps:
       - name: Check out the pushed commit
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -108,7 +108,7 @@ jobs:
           Assert-Witcher3ModsReleaseTag
           if ($existing -and -not $existing.draft) { Write-Output 'Release already published; unchanged.'; exit 0 }
           if (-not $existing) {
-            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Install the ZIP by copying its modWitcher3ModsAchivementPanel folder into the game's mods directory. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
+            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Install the ZIP by copying its modWitcher3ModsAchievementPanel folder into the game's mods directory. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
             if ($LASTEXITCODE -ne 0) { throw 'Could not create release draft.' }
           }
           gh release upload $releaseTag $archivePath --clobber
