@@ -1,4 +1,4 @@
-# Witcher3ModsAchivementPanel
+# Witcher3ModsAchievementPanel
 
 Made with the Witcher III Modding Tool, developed and released by CD PROJEKT RED for use with The Witcher III: Wild Hunt. © 2014 and ™ CD PROJEKT RED. All rights reserved. Check out the Witcher III Modding Tool here: http://redkit.cdprojektred.com/
 This statement is retained conservatively from the legacy Modding Tool terms distributed with the installed REDkit toolchain. It does not assert that those legacy terms supersede the current REDkit EULA.

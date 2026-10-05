@@ -1,4 +1,4 @@
-// Witcher3ModsAchivementPanel: catalogue data, no UI or account mutations.
+// Witcher3ModsAchievementPanel: catalogue data, no UI or account mutations.
 struct Witcher3ModsAchievementDefinition
 {
     var Witcher3ModsAchievementKey, Witcher3ModsSteamAchievementKey, Witcher3ModsShortAchievementKey : name;

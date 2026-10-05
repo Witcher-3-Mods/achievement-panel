@@ -55,7 +55,7 @@ try {
     foreach ($Witcher3ModsOutputName in @('blob0.bundle','metadata.store')) {
         if ((Get-Item -LiteralPath "$Witcher3ModsRun/packed/$Witcher3ModsOutputName").Length -eq 0) { throw "Empty package output: $Witcher3ModsOutputName" }
     }
-    $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchivementPanel/content'
+    $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchievementPanel/content'
     foreach ($Witcher3ModsOutputName in @('blob0.bundle','metadata.store')) {
         $Witcher3ModsOutput = Join-Path $Witcher3ModsPackage $Witcher3ModsOutputName
         if (Test-Path -LiteralPath $Witcher3ModsOutput) {

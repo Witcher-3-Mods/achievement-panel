@@ -21,7 +21,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllTex
 $ErrorActionPreference = 'Stop'
 
 # ---- What this uninstaller removes. Everything else is left alone. ----------
-$ModFolder = 'modWitcher3ModsAchivementPanel'      # <game>\mods\<this folder>
+$ModFolder = 'modWitcher3ModsAchievementPanel'      # <game>\mods\<this folder>
 $ModTitle  = 'Achievement Panel'
 $ConfigXml = ''      # <game>\bin\config\r4game\user_config_matrix\pc\<this file>
 $Sections  = @('Witcher3ModsAchievementPanel')       # whole sections in the *user.settings files
@@ -144,6 +144,11 @@ try {
     if (-not $docs) { $docs = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'The Witcher 3' }
 
     $modDir  = Join-Path $game "mods\$ModFolder"
+    # Also the copy that earlier releases installed under a misspelled folder name.
+    $legacy = @()
+    if (Test-Path -LiteralPath (Join-Path $game 'mods')) {
+        $legacy = @(Get-ChildItem -LiteralPath (Join-Path $game 'mods') -Directory -Filter 'modWitcher3ModsAch*Panel' | Where-Object { $_.Name -ne $ModFolder })
+    }
     $xmlPath = $null
     if ($ConfigXml) { $xmlPath = Join-Path $game "bin\config\r4game\user_config_matrix\pc\$ConfigXml" }
     $settings = @()
@@ -154,6 +159,7 @@ try {
 
     $present = @()
     if (Test-Path -LiteralPath $modDir)  { $present += "Mod folder:        $modDir" }
+    foreach ($old in $legacy)            { $present += "Former mod folder: $($old.FullName)" }
     if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) { $present += "Option definition: $xmlPath" }
     foreach ($path in $settings)         { $present += "Saved option value: $path (the mod's section only)" }
     if ($present.Count -eq 0) {
@@ -175,6 +181,10 @@ try {
     if (Test-Path -LiteralPath $modDir) {
         Remove-Item -LiteralPath $modDir -Recurse -Force
         Write-Host "Removed $modDir"
+    }
+    foreach ($old in $legacy) {
+        Remove-Item -LiteralPath $old.FullName -Recurse -Force
+        Write-Host "Removed $($old.FullName)"
     }
     if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) {
         Remove-Item -LiteralPath $xmlPath -Force

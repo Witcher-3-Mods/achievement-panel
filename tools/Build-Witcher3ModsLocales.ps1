@@ -6,7 +6,7 @@ param([switch]$Check)
 # https://steamcommunity.com/stats/292030/achievements/?l=polish
 # Descriptions are project-authored summaries, not copies of Steam descriptions.
 $ErrorActionPreference = 'Stop'
-$Witcher3ModsPackage = Join-Path $PSScriptRoot '../src/modWitcher3ModsAchivementPanel'
+$Witcher3ModsPackage = Join-Path $PSScriptRoot '../src/modWitcher3ModsAchievementPanel'
 $Witcher3ModsEnglish = Get-Content -LiteralPath (Join-Path $Witcher3ModsPackage 'locales/en.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $Witcher3ModsPolish = Get-Content -LiteralPath (Join-Path $Witcher3ModsPackage 'locales/pl.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 $Witcher3ModsKeys = @($Witcher3ModsEnglish.PSObject.Properties.Name | Sort-Object)
