@@ -1,0 +1,141 @@
+Scope and provenance:
+These notices cover third-party materials in src/assets and the current
+src/modWitcher3ModsAchivementPanel package, including source assets and their
+counterparts embedded in the compiled mod.
+The repository-root THIRD-PARTY-NOTICES.txt is the authoritative copy.
+Keep the packaged THIRD-PARTY-NOTICES.txt identical so these notices also
+accompany the installable mod when distributed separately.
+This is an unofficial fan work and is not approved or endorsed by CD PROJEKT RED.
+Intended for noncommercial use with The Witcher 3: Wild Hunt.
+
+The Witcher 3 interface artwork and original interface code:
+Copyright CD PROJEKT S.A. All rights reserved.
+Derived from the user's installed The Witcher 3 game scripts and REDkit resources for use as
+a The Witcher 3 mod, subject to the applicable game/REDkit license terms.
+THE WITCHER is a trademark of CD PROJEKT S.A.
+The Witcher game is based on the prose of Andrzej Sapkowski.
+
+Achievement icons, titles and descriptions:
+The Witcher 3 achievement artwork belongs to its respective rights holders,
+including CD PROJEKT RED. Source: Steam global achievements for app 292030.
+Individual source URLs and SHA-256 hashes are recorded in
+src/assets/achievement-icons/manifest.json in the source repository.
+English and Polish achievement text is derived from the game's achievement
+data and Steam global achievement pages for app 292030. URLs and hashes record
+provenance and integrity; they do not grant additional redistribution rights.
+The checked-in icons are fixed source assets, not runtime downloads.
+
+CDPR terms and guidance:
+https://www.thewitcher.com/us/en/redkit/modding
+https://store.steampowered.com/eula/2889630_eula_0
+https://www.cdprojektred.com/en/fan-content
+https://regulations.cdprojektred.com/en/user_agreement
+
+Native UI modding context (official sources checked 2026-10-04):
+The REDkit FAQ explicitly identifies original Flash UI sources among the
+resources supplied for modding and describes sharing mods with other players.
+The REDkit EULA's Mods section limits their use to noncommercial use within
+The Witcher 3, not other games or standalone products. The Fan Content
+Guidelines, section 3 (Mods), explicitly include UI modifications.
+These documents support the intended native UI-derived modding context.
+The FAQ is guidance; applicable EULA/game terms and third-party licenses
+govern rights and restrictions. None makes the game or middleware open source.
+The Fan Content Guidelines also require an unofficial-work disclaimer and
+respect for third-party rights. Their section 4 and the REDkit EULA provide
+rights to CD PROJEKT RED over original mod content; the project's license
+preserves those grants. Its restriction on ordinary redistribution is the
+author's policy, not a claim that CDPR forbids sharing mods generally.
+
+GTween / GTweener and easing classes:
+The original compiled interface retains these components by Grant Skinner.
+The corresponding REDkit source identifies GTween version 2.01. Easing classes
+identify adaptations of Robert Penner's AS3 tweening equations.
+The following notice is retained from the corresponding installed source:
+
+Copyright (c) 2009 Grant Skinner
+
+Permission is hereby granted, free of charge, to any person
+obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without
+restriction, including without limitation the rights to use,
+copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the
+Software is furnished to do so, subject to the following
+conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+OTHER DEALINGS IN THE SOFTWARE.
+
+Robert Penner easing equations:
+The upstream author offers these equations under MIT or BSD-3-Clause terms.
+The MIT notice is retained here for the identified adaptations:
+https://robertpenner.com/easing_terms_of_use.html
+
+Copyright © 2001 Robert Penner
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+Autodesk Scaleform CLIK:
+The original compiled interface retains Autodesk Scaleform CLIK components.
+The corresponding installed source files carry these notices:
+Copyright 2011 Autodesk, Inc. All Rights reserved.
+Copyright 2012 Autodesk, Inc. All Rights reserved.
+Use of this software is subject to the terms of the Autodesk license agreement
+provided at the time of installation or download, or which otherwise accompanies
+this software in either electronic or hard copy form.
+These components are not licensed under the original project material license. This
+attribution does not grant a standalone middleware redistribution license.
+
+The original compiled menu also retains fl.transitions.easing.Strong, a Flash
+component inherited from the native UI, not licensed as original project code.
+The retained native Scaleform/Flash components are used within the modified
+in-game UI; this package does not supply a standalone middleware SDK.
+The documented modding context above applies to this intended use; these
+notices do not grant separate rights to extract or redistribute Adobe or
+Autodesk middleware, or disclose their agreements with CDPR. Independently
+added middleware, SDK distribution and uses outside the game are not covered
+by this intended-use statement and require their own applicable permissions.
+
+The accompanying Personal Noncommercial Use License applies only to original
+project material for which the author holds the necessary rights. Source is
+available for inspection and security review; this is not an OSI open-source
+license. Third-party MIT notices above remain unchanged.
+Third-party materials remain subject to their respective rights and terms.
+JPEXS and REDkit build tools are used to build the mod and are not included in the installable package.
+
+Authenticity and security:
+Source inspection is possible before use, but source availability does not
+prove a downloaded archive matches the reviewed source or is safe. Compromise
+of accounts, repositories, mirrors or other distribution channels can result
+in unauthorized modification, substitution, repackaging or distribution.
+Presence on an author's account or project page does not itself authenticate
+a file. A hash delivered with a substituted archive does not authenticate it.
+No digital-signature or reproducible-build guarantee is made unless expressly
+stated for a particular release. No indefinite maintenance is promised.
+Do not run unexpected installers or executable files. See LICENSE for
+warranty, liability and maintenance terms.

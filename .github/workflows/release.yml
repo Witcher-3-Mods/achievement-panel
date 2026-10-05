@@ -1,0 +1,129 @@
+name: Release mod
+
+# Every push to main (a merged pull request) publishes the one and only release. The version comes from git tags:
+# the highest existing vMAJOR.MINOR.PATCH tag gets its PATCH raised by one, and a repository without such a tag starts at
+# v0.0.1. The workflow creates that tag on the pushed commit. Every other release is deleted together with its tag.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mod-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-2022
+    timeout-minutes: 15
+    permissions:
+      contents: write
+    defaults:
+      run:
+        shell: powershell
+    env:
+      RELEASE_SHA: ${{ github.sha }}
+      MOD_TITLE: Achievement Panel
+      MOD_ARCHIVE: Witcher3ModsAchivementPanel
+    steps:
+      - name: Check out the pushed commit
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Work out the version from git tags
+        run: |
+          $ErrorActionPreference = 'Stop'
+          if ($env:RELEASE_SHA -notmatch '^[a-f0-9]{40}$') { throw 'Invalid commit identity.' }
+          $semver = '^v(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)$'
+          $all = @(git tag --list 'v*' | Where-Object { $_ -match $semver })
+          if ($LASTEXITCODE -ne 0) { throw 'Could not list tags.' }
+          $atCommit = @(git tag --points-at $env:RELEASE_SHA | Where-Object { $_ -match $semver })
+          if ($atCommit.Count -gt 0) {
+            # A rerun for an already tagged commit keeps its version instead of bumping again.
+            $tag = ($atCommit | Sort-Object { [version]$_.Substring(1) } | Select-Object -Last 1)
+          } elseif ($all.Count -gt 0) {
+            $last = [version](($all | Sort-Object { [version]$_.Substring(1) } | Select-Object -Last 1).Substring(1))
+            $tag = "v$($last.Major).$($last.Minor).$($last.Build + 1)"
+          } else {
+            $tag = 'v0.0.1'
+          }
+          if ($tag -notmatch $semver) { throw "Computed an invalid release tag: $tag" }
+          Write-Output "Release tag: $tag"
+          [IO.File]::AppendAllText($env:GITHUB_ENV, "TAG_NAME=$tag`nVERSION=$($tag.Substring(1))`n")
+      - name: Package the committed cooked mod
+        # REDkit is not available on hosted runners. Cook locally before merging.
+        run: |
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip"
+      - name: Tag the commit and publish the single release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $releaseTag = $env:TAG_NAME
+          $archivePath = "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip"
+          if ($env:GH_REPO -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Invalid repository identity.' }
+          $Witcher3ModsApi = "https://api.github.com/repos/$env:GH_REPO"
+          $Witcher3ModsHeaders = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
+          function Get-Witcher3ModsReleaseTagCommit {
+            try {
+              $Witcher3ModsRef = Invoke-RestMethod -Uri "$Witcher3ModsApi/git/ref/tags/$releaseTag" -Headers $Witcher3ModsHeaders
+            } catch {
+              if ($_.Exception.Response -and [int]$_.Exception.Response.StatusCode -eq 404) { return $null }
+              throw
+            }
+            if ($Witcher3ModsRef.ref -cne "refs/tags/$releaseTag") { throw 'Unexpected release tag reference.' }
+            $Witcher3ModsObject = $Witcher3ModsRef.object
+            # Lightweight tags point directly at commits; annotated tags need peeling.
+            for ($Witcher3ModsDepth = 0; $Witcher3ModsDepth -lt 16; $Witcher3ModsDepth++) {
+              if ($Witcher3ModsObject.sha -notmatch '^[a-f0-9]{40}$') { throw 'Invalid tag object identity.' }
+              if ($Witcher3ModsObject.type -eq 'commit') { return $Witcher3ModsObject.sha }
+              if ($Witcher3ModsObject.type -ne 'tag') { throw 'Release tag does not resolve to a commit.' }
+              $Witcher3ModsTag = Invoke-RestMethod -Uri "$Witcher3ModsApi/git/tags/$($Witcher3ModsObject.sha)" -Headers $Witcher3ModsHeaders
+              $Witcher3ModsObject = $Witcher3ModsTag.object
+            }
+            throw 'Release tag annotation chain exceeds the supported depth.'
+          }
+          function Assert-Witcher3ModsReleaseTag {
+            if ((Get-Witcher3ModsReleaseTagCommit) -ne $env:RELEASE_SHA) { throw 'Release tag is missing or points at a different commit; nothing will be retagged.' }
+          }
+          # Reruns do not replace a published release. An interrupted draft can resume.
+          $existing = $null
+          try {
+            $existing = Invoke-RestMethod -Uri "$Witcher3ModsApi/releases/tags/$releaseTag" -Headers $Witcher3ModsHeaders
+          } catch {
+            if (-not $_.Exception.Response -or [int]$_.Exception.Response.StatusCode -ne 404) { throw }
+          }
+          if (-not (Get-Witcher3ModsReleaseTagCommit)) {
+            # Create only; never move an existing tag. A concurrent creation fails safely.
+            $Witcher3ModsTagBody = @{ ref = "refs/tags/$releaseTag"; sha = $env:RELEASE_SHA } | ConvertTo-Json -Compress
+            Invoke-RestMethod -Method Post -Uri "$Witcher3ModsApi/git/refs" -Headers $Witcher3ModsHeaders -ContentType 'application/json' -Body $Witcher3ModsTagBody | Out-Null
+          }
+          Assert-Witcher3ModsReleaseTag
+          if ($existing -and -not $existing.draft) { Write-Output 'Release already published; unchanged.'; exit 0 }
+          if (-not $existing) {
+            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Install the ZIP by copying its modWitcher3ModsAchivementPanel folder into the game's mods directory. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
+            if ($LASTEXITCODE -ne 0) { throw 'Could not create release draft.' }
+          }
+          gh release upload $releaseTag $archivePath --clobber
+          if ($LASTEXITCODE -ne 0) { throw 'ZIP upload failed; release remains a draft.' }
+          # Keep exactly one release: delete every other release together with its tag, only after the new ZIP is uploaded.
+          $others = @(gh release list --limit 1000 --json tagName --jq '.[].tagName')
+          if ($LASTEXITCODE -ne 0) { throw 'Could not list releases.' }
+          foreach ($other in $others) {
+            if ($other -and $other -ne $releaseTag) {
+              gh release delete $other --cleanup-tag --yes
+              if ($LASTEXITCODE -ne 0) { throw "Could not delete release $other." }
+            }
+          }
+          # Recheck immediately before publication; remote tag protection is still
+          # needed to prevent a privileged actor from moving tags between/after calls.
+          Assert-Witcher3ModsReleaseTag
+          gh release edit $releaseTag --draft=false --latest
+          if ($LASTEXITCODE -ne 0) { throw 'Could not publish release.' }

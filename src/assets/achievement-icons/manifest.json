@@ -1,0 +1,554 @@
+{
+    "source":  "https://steamcommunity.com/stats/292030/achievements?l=english",
+    "rights":  "The Witcher 3 achievement artwork belongs to its respective rights holders, including CD PROJEKT RED. These third-party assets are not covered by the original project material license.",
+    "runtimeReady":  false,
+    "purpose":  "Fixed, checked-in source artwork. Preserve these files and recorded hashes; no download or manifest-regeneration step. Imported and cooked into game UI resources; loose JPEG files are not installed as runtime icons.",
+    "icons":  [
+                  {
+                      "key":  "EA_FreedDandelion",
+                      "title":  "A Friend in Need",
+                      "file":  "EA_FreedDandelion.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/07bae88f1ee9b856ddfc1d8e28ae7eedd4bcde95.jpg",
+                      "sha256":  "0da6a580ab0800ec61cd7766b968baf229afacb427cecedecdd1df6e4c216642"
+                  },
+                  {
+                      "key":  "EA_Allin",
+                      "title":  "All In",
+                      "file":  "EA_Allin.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/5fb8fc4d48ea8ff21226716cd8e0f6f18ab21980.jpg",
+                      "sha256":  "8aae3d7eaff2421da1f551d5521f1c4817d10f36a3f789eca2d1115190632ebf"
+                  },
+                  {
+                      "key":  "EA_FullyArmed",
+                      "title":  "Armed and Dangerous",
+                      "file":  "EA_FullyArmed.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/720fb19b6f8513203187ad68b8894a4ce54418be.jpg",
+                      "sha256":  "7dccda7b66468d1cea4b6413b7d2945268e8e38ab02d72b8766aa1c71ecce6b9"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntDao",
+                      "title":  "Ashes to Ashes",
+                      "file":  "EA_MonsterHuntDao.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/62d76aa7f2f5f04d9554ab81dc115e7b2ecb99f1.jpg",
+                      "sha256":  "5232421d2a778fe3fc0ff2f20ef275a52c9c7129a3c9a22de35dcb1c256a33c2"
+                  },
+                  {
+                      "key":  "EA_CompleteWar",
+                      "title":  "Assassin of Kings",
+                      "file":  "EA_CompleteWar.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/19eae932cd305251be54b13048e158063ade7351.jpg",
+                      "sha256":  "eedcb270736f9cb31c7a7cfadd952008bc6c171e6cfe4167b53652bbcac67c1e"
+                  },
+                  {
+                      "key":  "EA_Bombardier",
+                      "title":  "Bombardier",
+                      "file":  "EA_Bombardier.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/0a0e169c93d95d9d44ebce034df859daba1d56fd.jpg",
+                      "sha256":  "d54fd5f7b1460ee058e7c4499a1a8774fbf7729f4d267531a01aad76276dad80"
+                  },
+                  {
+                      "key":  "EA_Bookworm",
+                      "title":  "Bookworm",
+                      "file":  "EA_Bookworm.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/ac3230e2cf5420c9aec901bab804f59b55421f88.jpg",
+                      "sha256":  "7a3e792642e48789e38089f618939daf2f21aafe9ddeaaa8852b8f3c6a5e987f"
+                  },
+                  {
+                      "key":  "EA_BrawlMaster",
+                      "title":  "Brawl Master",
+                      "file":  "EA_BrawlMaster.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/f94f1bdb9686f1cc38369bd48649a5e9c05d1839.jpg",
+                      "sha256":  "b35080b7f1e944eb4dd88f20c28d23f9a417605145bfdcf58194b8d3b2447eba"
+                  },
+                  {
+                      "key":  "EA_Brawler",
+                      "title":  "Brawler",
+                      "file":  "EA_Brawler.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/78baf8e4d8b11dc11e874b8821293d4e19f2f098.jpg",
+                      "sha256":  "687b55c6f73767300ac2f7f10e92d600e5bddb6e9825eea19c1d289ddde65c58"
+                  },
+                  {
+                      "key":  "EA_Swank",
+                      "title":  "Butcher of Blaviken",
+                      "file":  "EA_Swank.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/76e5ab1da1c29adf03f4bafe14f1dc098bd3ecc7.jpg",
+                      "sha256":  "1f21fad93c5a4287b96a11858c4e7f372fa168ebab4cd9ac9a71ee36b3f0ca5a"
+                  },
+                  {
+                      "key":  "EA_Finesse",
+                      "title":  "Can\u0027t Touch This!",
+                      "file":  "EA_Finesse.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/e6ab11c635a0e099b82943671ef77433f338fd64.jpg",
+                      "sha256":  "7d3bf14e95fefbc698b7f86a3b647c36618279beb706c432677987b763726d03"
+                  },
+                  {
+                      "key":  "EA_GwintCollector",
+                      "title":  "Card Collector",
+                      "file":  "EA_GwintCollector.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/1e6f6151af80b51f081ecc5b711a25fda9b16998.jpg",
+                      "sha256":  "765203cf818124d3b47adc920b5923859a8a9b1790ac4a7c0ac00ddb424d63e4"
+                  },
+                  {
+                      "key":  "EA_Dendrology",
+                      "title":  "Dendrologist",
+                      "file":  "EA_Dendrology.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/433ba53ca210c08419c7166f3c07aa45c854936a.jpg",
+                      "sha256":  "3443f167c20fb93b8feba4a06a56085d09060ee267b4c0255c276458d91f48c1"
+                  },
+                  {
+                      "key":  "EA_EnvironmentUnfriendly",
+                      "title":  "Environmentally Unfriendly",
+                      "file":  "EA_EnvironmentUnfriendly.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/dd53b81dd01f0e5e192a3dd74f3be85d2d352887.jpg",
+                      "sha256":  "654ba59f0b43abb5bb2762b17033e02dc025e6926b6b7f5be8c6049aef25efd2"
+                  },
+                  {
+                      "key":  "EA_FundamentalsFirst",
+                      "title":  "Even Odds",
+                      "file":  "EA_FundamentalsFirst.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/7f481d90fd7d0a1164b6df055c2f97d299d8b91c.jpg",
+                      "sha256":  "22f38b7ae56c68a864b92a6febeab9753756fdd330a5b6f3e224b2699bb025ec"
+                  },
+                  {
+                      "key":  "EA_FindBaronsFamily",
+                      "title":  "Family Counselor",
+                      "file":  "EA_FindBaronsFamily.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/883f82ffa933d6d12da3e8733f340b082a08c325.jpg",
+                      "sha256":  "f142e4ce9dd36db21d346e716a520558e031c6eed96e7facdf6f65b03dfa8df1"
+                  },
+                  {
+                      "key":  "EA_NeedForSpeed",
+                      "title":  "Fast and Furious",
+                      "file":  "EA_NeedForSpeed.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/449b8d58103ca7ed90f4cdbf2cc76d434cbb3172.jpg",
+                      "sha256":  "0249ba00563b71379dc74538498dd69feee4b4015e917f2516ed0c97b10cd0ca"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntEkimma",
+                      "title":  "Fearless Vampire Slayer",
+                      "file":  "EA_MonsterHuntEkimma.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/6bad719fc32da9534c2381b23f35f53c0998640e.jpg",
+                      "sha256":  "9920d072898a75d432306148a021a39d9c025fee2bbb441a6acd73a07096e28d"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntFiend",
+                      "title":  "Fiend or Foe?",
+                      "file":  "EA_MonsterHuntFiend.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/a965adb6e79d3db464162c16c77f57b6e57afb03.jpg",
+                      "sha256":  "d8b1ac84d37c32e615255a8bf8b3480dff7b6e3681f8900fe0ad48130201fe16"
+                  },
+                  {
+                      "key":  "EA_FireInTheHole",
+                      "title":  "Fire in the Hole",
+                      "file":  "EA_FireInTheHole.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/18278d6acee5b23a5c479908b58ba0d384084ea4.jpg",
+                      "sha256":  "526991978c51bf7ee7638940c26b603e1f0cf533b6d1ffafd61c850a21a7705c"
+                  },
+                  {
+                      "key":  "EA_FistOfTheSouthStar",
+                      "title":  "Fist of the South Star",
+                      "file":  "EA_FistOfTheSouthStar.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/892ee6bff989959ea26f353157a1e48f33c9e968.jpg",
+                      "sha256":  "52661c9065e25a2b7089266294f10a84a8b7fa2caa5ed7979904bf9c0cb98190"
+                  },
+                  {
+                      "key":  "EA_CompleteKeiraMetz",
+                      "title":  "Friends With Benefits",
+                      "file":  "EA_CompleteKeiraMetz.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/bdd4d0466a3aca46ff416c3f3ee72d5a1ab4e777.jpg",
+                      "sha256":  "d3645f318dbcf7d31a12ea856868500f0bd610791ab88b0a797c879f4b024ea5"
+                  },
+                  {
+                      "key":  "EA_GetAllForKaerMorhenBattle",
+                      "title":  "Full Crew",
+                      "file":  "EA_GetAllForKaerMorhenBattle.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/1a0b226212540b6d2d03c751abf1f5794a44b821.jpg",
+                      "sha256":  "e37163dd350ec7db3454cf94de5a16628e95d7dbb7b3565f9a006831ce93bf9f"
+                  },
+                  {
+                      "key":  "EA_GeraltandFriends",
+                      "title":  "Geralt and Friends",
+                      "file":  "EA_GeraltandFriends.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/bb2a8ee492a0eb86885c7e3969a6e0f7b4b2468a.jpg",
+                      "sha256":  "45c3d045847fb5ae1e66a51c764989a2f3649d98d28d48af648a1e6ca5ffb60d"
+                  },
+                  {
+                      "key":  "EA_CompleteWitcherContracts",
+                      "title":  "Geralt: The Professional",
+                      "file":  "EA_CompleteWitcherContracts.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/a3418fb0090f1efbeb5012dc4af5c944518df6a6.jpg",
+                      "sha256":  "6b823d9c0a987fa520c73d10d5a2047f40ddb24a910dac1c435952f38bf4695a"
+                  },
+                  {
+                      "key":  "EA_Explorer",
+                      "title":  "Globetrotter",
+                      "file":  "EA_Explorer.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/7259b0914d17ab810cf8d328bde32fee451274af.jpg",
+                      "sha256":  "bd342ab64077bc7d2b05d0611c7069fed0c40417dd38b31fccab16c4e8d6fb46"
+                  },
+                  {
+                      "key":  "EA_GwintMaster",
+                      "title":  "Gwent Master",
+                      "file":  "EA_GwintMaster.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/8281c490cee74176cb65792dafb2a0a43370be7d.jpg",
+                      "sha256":  "68572c8c92b606c1a1ac7a3c464b36d56fb84a9e9a70b58d3c6e525ed2ad5379"
+                  },
+                  {
+                      "key":  "EA_FusSthSth",
+                      "title":  "Humpty Dumpty",
+                      "file":  "EA_FusSthSth.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/f1258da57e56a1bca7b68d6bbf824c5ba102e6f9.jpg",
+                      "sha256":  "37392dd2ba33eab29af343cee93ba6c5f89f409e0f172577470acc54b1e6e167"
+                  },
+                  {
+                      "key":  "EA_TrainedInKaerMorhen",
+                      "title":  "Kaer Morhen Trained",
+                      "file":  "EA_TrainedInKaerMorhen.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/e5c0ea87e4b1d9044cbc51e10735a3b0750c4f65.jpg",
+                      "sha256":  "e93b7426c225ed1bde5edaac8e42fbb98bbae5d60775fc18e0611b03c4e1816e"
+                  },
+                  {
+                      "key":  "EA_CompleteSkelligeRaceForCrown",
+                      "title":  "Kingmaker",
+                      "file":  "EA_CompleteSkelligeRaceForCrown.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/31a0391e642217dcabcefd4c55ba32539d45c516.jpg",
+                      "sha256":  "7ff1230fc7f784fae0b5af2fe457242acc1fc733f678068e75ec40566e0abfbb"
+                  },
+                  {
+                      "key":  "EA_BreakingBad",
+                      "title":  "Let\u0027s Cook!",
+                      "file":  "EA_BreakingBad.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/cc738e3d91875361de309e67d887dab9dd684851.jpg",
+                      "sha256":  "7f064dbaecee0a9f04af0ab70a30541c78a5d6ce1002acdb91cd1dcc94f5c639"
+                  },
+                  {
+                      "key":  "EA_FoundYennefer",
+                      "title":  "Lilac and Gooseberries",
+                      "file":  "EA_FoundYennefer.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/6078587189483353f06f48d0eefdaaa0791e9e13.jpg",
+                      "sha256":  "a2df55abe8c3de9170ae51fccb0177b80a83183fe76001414c67b5e8fe286a24"
+                  },
+                  {
+                      "key":  "EA_TechnoProgress",
+                      "title":  "Master Marksman",
+                      "file":  "EA_TechnoProgress.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/f242418c2ce272157e918a1c3ac4a00ba41b0f04.jpg",
+                      "sha256":  "105199e9211e555361727860f628494cbf83a424642f19dbfca12c9a04b3efe0"
+                  },
+                  {
+                      "key":  "EA_Immortal",
+                      "title":  "Munchkin",
+                      "file":  "EA_Immortal.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/d40d29f01f627f0cab311e249a401ff507e496fc.jpg",
+                      "sha256":  "e7ef08d4551052a1679b15b0cfff25ca200656f187fbc32f8bc0e49c8f58ee82"
+                  },
+                  {
+                      "key":  "EA_TrialOfGrasses",
+                      "title":  "Mutant",
+                      "file":  "EA_TrialOfGrasses.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/460a057757aa460c17cb4f9a47edb64b80d82baa.jpg",
+                      "sha256":  "9c5fbf5d68dc43228fc94e44902e90a11880fbbb6a6fe3417314055e13ef5e66"
+                  },
+                  {
+                      "key":  "EA_YenGetInfoAboutCiri",
+                      "title":  "Necromancer",
+                      "file":  "EA_YenGetInfoAboutCiri.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/652e39d4e750183a390a4e9f2f99018c1b335a20.jpg",
+                      "sha256":  "ae1e1efe6d8b91273c8a7792173124760881283bd78d415724e1e430f7debf8c"
+                  },
+                  {
+                      "key":  "EA_Rage",
+                      "title":  "Overkill",
+                      "file":  "EA_Rage.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/225ea779283e0e6168ad010e14a43346974adac3.jpg",
+                      "sha256":  "7aa44a8aefae2abe74e56403bf8a65138cfda1e690163e5581b839b0f8dcbc35"
+                  },
+                  {
+                      "key":  "EA_FinishTheGameEasy",
+                      "title":  "Passed the Trial",
+                      "file":  "EA_FinishTheGameEasy.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/bc1da5cdbd6e323308f012851cf4c3f6a1439c3f.jpg",
+                      "sha256":  "deafc60e05fe2a8cdc6d733e83f469d0b4901fb6ac525743215cd71411436d48"
+                  },
+                  {
+                      "key":  "EA_PestControl",
+                      "title":  "Pest Control",
+                      "file":  "EA_PestControl.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/5d71ca10e0422dee6e1cf69ea9bd94609b22e085.jpg",
+                      "sha256":  "8a9939ea5960e6d5e4d00a56e444c50bb5bc1eabe82dce030eebe07309ce81ee"
+                  },
+                  {
+                      "key":  "EA_PowerOverwhelming",
+                      "title":  "Power Overwhelming",
+                      "file":  "EA_PowerOverwhelming.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/0511acb3579013edc90b1bd7e0446aa3f53b3fae.jpg",
+                      "sha256":  "fbef13ea0172fecdbe65718af8097e45d4cec86e5eba8a11fd66e46c7f93b7af"
+                  },
+                  {
+                      "key":  "EA_FinishTheGameNormal",
+                      "title":  "Ran the Gauntlet",
+                      "file":  "EA_FinishTheGameNormal.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/cba4abe872ecb92a755cbc9cf1ffa708b7aef42e.jpg",
+                      "sha256":  "1fef50725427bc050683103e893b1cfcb442a9b43c805fbc99bf188d97a1cff8"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntFogling",
+                      "title":  "Shrieker",
+                      "file":  "EA_MonsterHuntFogling.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/15ba42e467dd64b4d4be2d2d686a7d5e5cadbd5a.jpg",
+                      "sha256":  "408c576c2c855e20000dc33f1fbd75f8a09c20a566a2499b72c6b5cf160da9a4"
+                  },
+                  {
+                      "key":  "EA_FindCiri",
+                      "title":  "Something More",
+                      "file":  "EA_FindCiri.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/97246533609245ba270e7a8eb39a64d319ce5011.jpg",
+                      "sha256":  "23ec06e10b20a43d34f3467a8c8e350d0969d8af19768141c1ce1992ce05a650"
+                  },
+                  {
+                      "key":  "EA_TheEvilestThing",
+                      "title":  "That Is the Evilest Thing",
+                      "file":  "EA_TheEvilestThing.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/03ce4a6f6131fdf139f2701f41de357140e34afe.jpg",
+                      "sha256":  "bd273c4e65a0a83c8e81695f4f4a9a022463202b7c861a297918840c9d85c2d6"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntDoppler",
+                      "title":  "The Doppler Effect",
+                      "file":  "EA_MonsterHuntDoppler.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/6b408f870900feec6124e5bc7953c01f399c7fd7.jpg",
+                      "sha256":  "b9443a44d3239c6c91a8f75865b2b47422eaabe4f7c5bf3904a426014f082961"
+                  },
+                  {
+                      "key":  "EA_EnemyOfMyFriend",
+                      "title":  "The Enemy of My Enemy",
+                      "file":  "EA_EnemyOfMyFriend.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/a0e870df280a9b606a55c13398c6c631c70d4cf9.jpg",
+                      "sha256":  "3ba1c56fec16f59c3912b37759d282c7c1d735d2f10171a2e282cb25dacfb725"
+                  },
+                  {
+                      "key":  "EA_DefeatEredin",
+                      "title":  "The King is Dead",
+                      "file":  "EA_DefeatEredin.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/53e0820b82445eeafe38f4991b947ed6ef64406d.jpg",
+                      "sha256":  "bbd61ad0e932f1be88eb1dbea43e809fd85f022b79ee92f3f4d151fff1d499aa"
+                  },
+                  {
+                      "key":  "EA_Cerberus",
+                      "title":  "Triple Threat",
+                      "file":  "EA_Cerberus.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/2f1359c55f3ead5c6cfcc7ad19d4ffad4b583680.jpg",
+                      "sha256":  "aca5d08b612ec5daa95734690cd3aece35e6e40f29aaa76eb34015a6a982af44"
+                  },
+                  {
+                      "key":  "EA_FinishTheGameHard",
+                      "title":  "Walked the Path",
+                      "file":  "EA_FinishTheGameHard.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/03afa403f58958f72f7540345ba16a3439d1f830.jpg",
+                      "sha256":  "35ac6e6e580207ce1f7dce551366b604a334aab842fb51140ec47b1a8da6428c"
+                  },
+                  {
+                      "key":  "EA_LearningTheRopes",
+                      "title":  "What Was That?",
+                      "file":  "EA_LearningTheRopes.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/305ccec5f9c42bf46f5b83bd6fc2a4602188b3d5.jpg",
+                      "sha256":  "8958c47b179f2204774245ba0511e375a78c595ad6433892de1f8e92a0a81ec6"
+                  },
+                  {
+                      "key":  "EA_MonsterHuntLamia",
+                      "title":  "Woodland Spirit",
+                      "file":  "EA_MonsterHuntLamia.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/592b0ea4f7c32493db460f0b22b4ef895f1f60c1.jpg",
+                      "sha256":  "5c698df7a7a2075dc42b878ac97d61987ffbb707ed73220a0f0da975174199dd"
+                  },
+                  {
+                      "key":  "EA_ConvinceGeelsToBetrayEredin",
+                      "title":  "Xenonaut",
+                      "file":  "EA_ConvinceGeelsToBetrayEredin.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/46b0b574e6334d81211e0c3db1539d3a76364144.jpg",
+                      "sha256":  "400dfa41ca65804c1e13b6bc819f72a8ec2628b3073eb7c836417eeb15f529f2"
+                  },
+                  {
+                      "key":  "EA_Thirst",
+                      "title":  "Can Quit Anytime I Want",
+                      "file":  "EA_Thirst.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/9aac1ac17f7e357ecd0b2e7cefaf7e5d07814677.jpg",
+                      "sha256":  "c4194dff786c96114669481216d457885856a637b4404888369f9221c040f6dd"
+                  },
+                  {
+                      "key":  "EA_TheCompletePicture",
+                      "title":  "Curator of Nightmares",
+                      "file":  "EA_TheCompletePicture.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/9e07c312af37292c5901eb2d8fa9cd5dca1dedf3.jpg",
+                      "sha256":  "068a6d0528c7d87bf9f9e73df1883bb318aae375c4a800c37d38d5682b39ac3f"
+                  },
+                  {
+                      "key":  "EA_LatestFashion",
+                      "title":  "I Wore Ofieri Before It Was Cool",
+                      "file":  "EA_LatestFashion.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/1e2d9cf257ccfe34ec86448675e338c0c504f3ce.jpg",
+                      "sha256":  "601b1d84e5765cbfe5e4eef3b8618359a9383d40cabdbdeb818f4bcfa055f3d5"
+                  },
+                  {
+                      "key":  "EA_ToadPrince",
+                      "title":  "I\u0027m Not Kissing That",
+                      "file":  "EA_ToadPrince.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/291cd726ee742ada9498be3b020e697fd5eedf91.jpg",
+                      "sha256":  "3ba4f2a41b2d0ce2f91b38dde1f12a0699fcd91919251208188b04de9e95fe95"
+                  },
+                  {
+                      "key":  "EA_KilledIt",
+                      "title":  "Killed It",
+                      "file":  "EA_KilledIt.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/149dd41b2197904091bcc8d36529a3cb6340d217.jpg",
+                      "sha256":  "7265c993fec67757a25e04a90398fbb2fe585da25c3d1f61eff71425a7d9f3ce"
+                  },
+                  {
+                      "key":  "EA_PartyAnimal",
+                      "title":  "Let the Good Times Roll!",
+                      "file":  "EA_PartyAnimal.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/50eddb5a3a6a5c6bf26abee1818279c204a8cc17.jpg",
+                      "sha256":  "bde72eafa43e5e4572baa1a1f6655014558300c0138feb7f97bfe54ff96e9392"
+                  },
+                  {
+                      "key":  "EA_WantedDeadOrBovine",
+                      "title":  "Moo-rderer",
+                      "file":  "EA_WantedDeadOrBovine.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/9c66ebb6c151916c7686630f02b49f42cb20ee8e.jpg",
+                      "sha256":  "808f2eed45d94351abe4cdc0cc86a55237e986ea64b750abca334ac74ffb06a4"
+                  },
+                  {
+                      "key":  "EA_HeartsOfStone",
+                      "title":  "Pacta Sunt Servanda",
+                      "file":  "EA_HeartsOfStone.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/091f8005a05b18b335683f639c2f145b6a416067.jpg",
+                      "sha256":  "ecee9f154274102524b8f458d46df6fcbee0b6e7a8fde1f7899661e14f02bee6"
+                  },
+                  {
+                      "key":  "EA_Slide",
+                      "title":  "Rad Steez, Bro!",
+                      "file":  "EA_Slide.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/0664ea245ca8bff2c019d2e461fd0a038baad590.jpg",
+                      "sha256":  "1e5967e506354815005bc55b980b3c8afb8852e55056cf60a2e3778fdf112d0f"
+                  },
+                  {
+                      "key":  "EA_FeatherStrongerThanSword",
+                      "title":  "Return to Sender",
+                      "file":  "EA_FeatherStrongerThanSword.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/79ab71bb3164e20c2bb15a128aecfd3ecadab1ce.jpg",
+                      "sha256":  "d6d56b4e2f07a41309d35d881403600abbd0d1db5b6d9d0948e5312304b2053a"
+                  },
+                  {
+                      "key":  "EA_Auctioneer",
+                      "title":  "Shopaholic",
+                      "file":  "EA_Auctioneer.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/84b4c4faf61763647718f5aa0d72c8a0ae304cfb.jpg",
+                      "sha256":  "c69f9674acac0b5645e7451ebef672766037fa75ff2c8956baf75246fead00ae"
+                  },
+                  {
+                      "key":  "EA_KillEtherals",
+                      "title":  "When It\u0027s Many Against One...",
+                      "file":  "EA_KillEtherals.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/095d742e3027646a854f3b2511e2c8f4c25862c7.jpg",
+                      "sha256":  "8b43c351a6018c1797c454ac661f5eb59430954f89a1f4090bbd2251fb7f9b13"
+                  },
+                  {
+                      "key":  "EA_DivineWhip",
+                      "title":  "Wild Rose Dethorned",
+                      "file":  "EA_DivineWhip.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/f1e4073f57743bb8dfc4d60817edd44eb03de8e1.jpg",
+                      "sha256":  "dbac881374eb15db00951e6f570f1cfdbabb1ce1eceab4470dbea1bd6ec34944"
+                  },
+                  {
+                      "key":  "EA_ChampionOfBeauclair",
+                      "title":  "A Knight to Remember",
+                      "file":  "EA_ChampionOfBeauclair.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/b57d937008fa24399f9e148bfd9ddf764d9973c1.jpg",
+                      "sha256":  "71f4aab61720e265d1bd66d5b3b183e778f8c2383c014b648fb82dc8b57d945d"
+                  },
+                  {
+                      "key":  "EA_Goliath",
+                      "title":  "David and Golyat",
+                      "file":  "EA_Goliath.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/91928a571176513cf75824dee99f2c3ef6339484.jpg",
+                      "sha256":  "164b750de03dcd105a4419154e7e4d2f49c1e48d0c29e4511e13f0469b2b92a3"
+                  },
+                  {
+                      "key":  "EA_ReadyToRoll",
+                      "title":  "Dressed to Kill",
+                      "file":  "EA_ReadyToRoll.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/f117ec5bce5ef47bddbf5cd6425a9df1d97bc1f5.jpg",
+                      "sha256":  "e17a56dea9cce834e5027d4085338a2e063dae30560c8d8e472acd936aee3c47"
+                  },
+                  {
+                      "key":  "EA_LikeAVirgin",
+                      "title":  "Embodiment of the Five Virtues",
+                      "file":  "EA_LikeAVirgin.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/fc36a7914ebf20e8e541ebd708dee34edcbb7c59.jpg",
+                      "sha256":  "091d2fc0b2e76b108dbdfdf84b1d01dd516ef19b9104cebfc1fec3d6b949e048"
+                  },
+                  {
+                      "key":  "EA_HastaLaVista",
+                      "title":  "Hasta la Vista",
+                      "file":  "EA_HastaLaVista.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/96b81977f5938a42d86afe8efa87a69e0d302573.jpg",
+                      "sha256":  "869e828fb145a40423d62f71d1a3f5a15ab2e0543ee24fa0e683bb152cf0745b"
+                  },
+                  {
+                      "key":  "EA_GotToHaveThemAll",
+                      "title":  "I Have a Gwent Problem",
+                      "file":  "EA_GotToHaveThemAll.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/6b5685d92e6435d574e3fc33552ad3d8d4830189.jpg",
+                      "sha256":  "75a775d6eef9444294bb86fc50bc9958de20a636e97ce8c5094ee32e9e8ab4bd"
+                  },
+                  {
+                      "key":  "EA_BeauclairMostWanted",
+                      "title":  "Kling of the Clink",
+                      "file":  "EA_BeauclairMostWanted.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/5075db2ffa46de3c230de477c8fc931b743f6eab.jpg",
+                      "sha256":  "eaf0e7c6106c8827d204901de3de67e0eb7f3c4af9b58b1791d43b8e417d3ecf"
+                  },
+                  {
+                      "key":  "EA_HeroOfBeauclair",
+                      "title":  "Last Action Hero",
+                      "file":  "EA_HeroOfBeauclair.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/2e8fb1c91b87aacb66367127083dd0fe1b92fd32.jpg",
+                      "sha256":  "f1f7f312634f16ba6e814bbdc51b671c3c0546578ec8700227d315e0427b397f"
+                  },
+                  {
+                      "key":  "EA_HomeSweetHome",
+                      "title":  "Playing House",
+                      "file":  "EA_HomeSweetHome.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/da6dabfb0424a0fc16bb508c4dfd70510168ad88.jpg",
+                      "sha256":  "012c08ab81a4caf0ccfb472dd900edad9a5beda3587b3508e4919ae7061e13e5"
+                  },
+                  {
+                      "key":  "EA_BloodAndWine",
+                      "title":  "The Grapes of Wrath Stomped",
+                      "file":  "EA_BloodAndWine.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/6aa435136c0dd0027b1aaeb4d45039520bad5c11.jpg",
+                      "sha256":  "88d44296f634c2c83a25772bec7af1598665e232147b508f54733137560a61c4"
+                  },
+                  {
+                      "key":  "EA_BeauclairWelcomeTo",
+                      "title":  "The Witcher\u0027s Gone South",
+                      "file":  "EA_BeauclairWelcomeTo.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/d8374b28d93ef6b6feca2e82bcedd6b715679681.jpg",
+                      "sha256":  "4619118f9ba4b214bb475a5970729892680c1f70ad995169baf64ed6fb7d2707"
+                  },
+                  {
+                      "key":  "EA_TurnedEveryStone",
+                      "title":  "Turned Every Stone",
+                      "file":  "EA_TurnedEveryStone.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/0e352549ec74cc3012d20266ffecf67ba7d3daa7.jpg",
+                      "sha256":  "3e8ec55a981d5f3a17827c12341566d9a27206edcd942b0b2c3324d98ee82a58"
+                  },
+                  {
+                      "key":  "EA_SchoolOfTheMutant",
+                      "title":  "Weapon \u0027W\u0027",
+                      "file":  "EA_SchoolOfTheMutant.jpg",
+                      "source":  "https://shared.fastly.steamstatic.com/community_assets/images/apps/292030/d03aa746e0bc11026aab5916d0e6663be256ef4c.jpg",
+                      "sha256":  "07d5e7b153434c88de294c807c0d9f16d8142a3059a2b875d406cc359ad3087f"
+                  }
+              ]
+}
