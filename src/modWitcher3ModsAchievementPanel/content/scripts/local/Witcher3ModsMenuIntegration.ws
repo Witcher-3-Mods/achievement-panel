@@ -219,7 +219,9 @@ function PopulateData()
         if (!Witcher3ModsEnableView)
         {
             // The patched Flash (content/blob0.bundle) is not the one loaded, e.g. a partial install or another mod
-            // replacing the same SWF. Without it the list cannot be drawn, so explain it in the native text area.
+            // replacing the same SWF. Without it the list cannot be drawn, so show the game's standard notification
+            // (the one menus use via GetGuiManager().ShowNotification) and explain it in the native text area.
+            theGame.GetGuiManager().ShowNotification(Witcher3ModsText("ui_flash_missing_toast", Witcher3ModsUsePolish()), 8000.0);
             m_fxSetTitle.InvokeSelfOneArg(FlashArgString(Witcher3ModsText("ui_flash_missing_title", Witcher3ModsUsePolish())));
             m_fxSetText.InvokeSelfOneArg(FlashArgString(Witcher3ModsText("ui_flash_missing", Witcher3ModsUsePolish())));
             m_fxShowSecondaryModulesSFF.InvokeSelfOneArg(FlashArgBool(true));

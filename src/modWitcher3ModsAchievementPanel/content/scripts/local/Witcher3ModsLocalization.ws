@@ -912,6 +912,11 @@ function Witcher3ModsText(Witcher3ModsKey : string, Witcher3ModsPolish : bool) :
         if (Witcher3ModsPolish) return "Nie załadowano interfejsu panelu osiągnięć";
         return "Achievement Panel interface not loaded";
     }
+    if (Witcher3ModsKey == "ui_flash_missing_toast")
+    {
+        if (Witcher3ModsPolish) return "Panel osiągnięć: nie załadowano plików interfejsu, więc lista jest pusta. Zainstaluj mod ponownie (szczegóły w panelu).";
+        return "Achievement Panel: interface files not loaded, so the list is empty. Reinstall the mod (details in the panel).";
+    }
     if (Witcher3ModsKey == "ui_hard")
     {
         if (Witcher3ModsPolish) return "Krew, pot i łzy";
