@@ -1,22 +1,20 @@
-@echo off
-rem ===========================================================================
-rem  Achievement Panel installer. Double-click this file to run it, or open it in
-rem  Notepad to read it. This file is both a batch file and a PowerShell script:
-rem  the one line below starts PowerShell, which reads the rest of this file
-rem  (everything below the marker line) and runs it.
-rem
-rem  It finds your Witcher 3 folder and installs this mod from the files you
-rem  downloaded: it replaces any previous version in the mods folder.
-rem  Run it from the extracted download (keep the folders of the ZIP together).
-rem  Optional switches (used by the maintainers for testing):
-rem    /yes                 do not ask for confirmation
-rem    /game:"C:\path"      use this game folder instead of searching
-rem ===========================================================================
-set "W3M_SELF=%~f0"
-set W3M_ARGS=%*
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllText($env:W3M_SELF,[Text.Encoding]::UTF8); Invoke-Expression $s.Substring($s.IndexOf('#'+'POWERSHELL'))" && exit /b 0 || exit /b 1
-#POWERSHELL
+# ===========================================================================
+#  Achievement Panel installer. install.exe (built from this file) contains a copy of this script and runs
+#  it; this file is the readable source. You can also run it with PowerShell.
+#
+#  It finds your Witcher 3 folder and installs this mod from the files you
+#  downloaded: it replaces any previous version in the mods folder.
+#  Run it from the extracted download (keep the folders of the ZIP together).
+#  Optional switches (used by the maintainers for testing):
+#    /yes                 do not ask for confirmation
+#    /game:"C:\path"      use this game folder instead of searching
+# ===========================================================================
+
 $ErrorActionPreference = 'Stop'
+
+# The .exe passes its own path and its raw command line; run straight from PowerShell, this file is used instead.
+$SelfPath = $env:W3M_SELF
+if (-not $SelfPath) { $SelfPath = $PSCommandPath }
 
 # ---- What this installer puts where. -----------------------------------------
 $ModFolder = 'modWitcher3ModsAchievementPanel'      # copied to <game>\mods\<this folder>
@@ -25,6 +23,7 @@ $ConfigXml = ''      # copied to <game>\bin\config\r4game\user_config_matrix\pc\
 # -----------------------------------------------------------------------------
 
 $argText = [string]$env:W3M_ARGS
+if ($null -eq $env:W3M_ARGS) { $argText = ($args -join ' ') }
 $yes     = $argText -match '(?i)(^|\s)/yes(\s|$)'
 function Get-Switch([string]$Name) {
     if ($argText -match ('(?i)(^|\s)/' + $Name + ':(?:"([^"]*)"|(\S+))')) {
@@ -58,6 +57,23 @@ function Get-DiskCasePath([string]$Path) {
     } catch { return $full }
 }
 
+# Windows PowerShell 5.1's Remove-Item -Recurse can follow a junction or symbolic link inside the folder and delete the
+# contents of whatever it points to. Walk the tree instead: a link is detached (only the link is deleted), everything else
+# is deleted normally.
+function Remove-ModTree([string]$Path) {
+    $item = Get-Item -LiteralPath $Path -Force
+    if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        if ($item.PSIsContainer) { [IO.Directory]::Delete($item.FullName) } else { [IO.File]::Delete($item.FullName) }
+        return
+    }
+    [IO.File]::SetAttributes($item.FullName, [IO.FileAttributes]::Normal)
+    if ($item.PSIsContainer) {
+        foreach ($child in @(Get-ChildItem -LiteralPath $item.FullName -Force)) { Remove-ModTree $child.FullName }
+        [IO.Directory]::Delete($item.FullName)
+    } else {
+        [IO.File]::Delete($item.FullName)
+    }
+}
 # Looks in the places a Witcher 3 install usually is: Steam libraries, GOG, Epic
 # and the usual folders on every fixed drive.
 function Find-GameDirs {
@@ -102,7 +118,7 @@ function Resolve-GameDir {
         return [IO.Path]::GetFullPath($given).TrimEnd('\')
     }
     # Run from <game>\mods\<mod>: that game is the one to use, no searching needed.
-    $modsDir = Split-Path (Split-Path $env:W3M_SELF -Parent) -Parent
+    $modsDir = Split-Path (Split-Path $SelfPath -Parent) -Parent
     if ((Split-Path $modsDir -Leaf) -eq 'mods' -and (Test-GameDir (Split-Path $modsDir -Parent))) {
         $here = [IO.Path]::GetFullPath((Split-Path $modsDir -Parent)).TrimEnd('\')
         Write-Host "Using the game folder this mod is in: $here"
@@ -130,7 +146,7 @@ function Resolve-GameDir {
 try {
     Write-Host "$ModTitle installer"
     Write-Host ''
-    $source = Split-Path $env:W3M_SELF -Parent
+    $source = Split-Path $SelfPath -Parent
     if (-not (Test-Path -LiteralPath (Join-Path $source 'content'))) {
         throw "This is not the complete $ModTitle folder: no 'content' folder next to this file. Extract the whole ZIP first, then run this from the extracted folder."
     }
@@ -173,12 +189,12 @@ try {
     }
 
     if (-not $sameFolder) {
-        if (Test-Path -LiteralPath $dest) { Remove-Item -LiteralPath $dest -Recurse -Force }
+        if (Test-Path -LiteralPath $dest) { Remove-ModTree $dest }
         New-Item -ItemType Directory -Force -Path (Split-Path $dest -Parent) | Out-Null
         Copy-Item -LiteralPath $source -Destination $dest -Recurse -Force
         Write-Host "Installed $dest"
     }
-    foreach ($old in $legacy) { Remove-Item -LiteralPath $old.FullName -Recurse -Force; Write-Host "Removed $($old.FullName)" }
+    foreach ($old in $legacy) { Remove-ModTree $old.FullName; Write-Host "Removed $($old.FullName)" }
     if ($xmlSource) {
         New-Item -ItemType Directory -Force -Path (Split-Path $xmlTarget -Parent) | Out-Null
         Copy-Item -LiteralPath $xmlSource -Destination $xmlTarget -Force
@@ -186,7 +202,7 @@ try {
     }
     # The engine reads the config only from <game>\bin\config and ignores a bin folder inside the mod folder.
     $strayBin = Join-Path $dest 'bin'
-    if ($ConfigXml -and (Test-Path -LiteralPath $strayBin)) { Remove-Item -LiteralPath $strayBin -Recurse -Force }
+    if ($ConfigXml -and (Test-Path -LiteralPath $strayBin)) { Remove-ModTree $strayBin }
 
     if (-not (Test-Path -LiteralPath (Join-Path $dest 'content'))) { throw "Installation failed: $dest has no content folder." }
     if ($ConfigXml -and -not (Test-Path -LiteralPath $xmlTarget)) { throw "Installation failed: $xmlTarget is missing." }

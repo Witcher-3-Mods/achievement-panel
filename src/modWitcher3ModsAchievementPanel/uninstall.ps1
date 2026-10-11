@@ -1,24 +1,19 @@
-@echo off
-rem ===========================================================================
-rem  Achievement Panel uninstaller. Double-click this file to run it, or open it in
-rem  Notepad to read it. This file is both a batch file and a PowerShell script:
-rem  the one line below starts PowerShell, which reads the rest of this file
-rem  (everything below the marker line) and runs it.
-rem
-rem  It finds your Witcher 3 folder, then removes this mod and only this mod.
-rem  Optional switches (used by the maintainers for testing):
-rem    /yes                 do not ask for confirmation
-rem    /game:"C:\path"      use this game folder instead of searching
-rem    /docs:"C:\path"      use this folder instead of Documents\The Witcher 3
-rem
-rem  The (goto) after the PowerShell line leaves this file without reading it again,
-rem  so the uninstaller can delete the folder it is running from.
-rem ===========================================================================
-set "W3M_SELF=%~f0"
-set W3M_ARGS=%*
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllText($env:W3M_SELF,[Text.Encoding]::UTF8); Invoke-Expression $s.Substring($s.IndexOf('#'+'POWERSHELL'))" & (goto) 2>nul & exit /b 0
-#POWERSHELL
+# ===========================================================================
+#  Achievement Panel uninstaller. uninstall.exe contains a copy of this script and
+#  runs it; this file is the readable source. You can also run it with PowerShell.
+#
+#  It finds your Witcher 3 folder, then removes this mod and only this mod.
+#  Optional switches (used by the maintainers for testing):
+#    /yes                 do not ask for confirmation
+#    /game:"C:\path"      use this game folder instead of searching
+#    /docs:"C:\path"      use this folder instead of Documents\The Witcher 3
+# ===========================================================================
+
 $ErrorActionPreference = 'Stop'
+
+# The .exe passes its own path and its raw command line; run straight from PowerShell, this file is used instead.
+$SelfPath = $env:W3M_SELF
+if (-not $SelfPath) { $SelfPath = $PSCommandPath }
 
 # ---- What this uninstaller removes. Everything else is left alone. ----------
 $ModFolder = 'modWitcher3ModsAchievementPanel'      # <game>\mods\<this folder>
@@ -29,6 +24,7 @@ $Keys      = @()           # single keys in other sections
 # -----------------------------------------------------------------------------
 
 $argText = [string]$env:W3M_ARGS
+if ($null -eq $env:W3M_ARGS) { $argText = ($args -join ' ') }
 $yes     = $argText -match '(?i)(^|\s)/yes(\s|$)'
 function Get-Switch([string]$Name) {
     if ($argText -match ('(?i)(^|\s)/' + $Name + ':(?:"([^"]*)"|(\S+))')) {
@@ -62,6 +58,23 @@ function Get-DiskCasePath([string]$Path) {
     } catch { return $full }
 }
 
+# Windows PowerShell 5.1's Remove-Item -Recurse can follow a junction or symbolic link inside the folder and delete the
+# contents of whatever it points to. Walk the tree instead: a link is detached (only the link is deleted), everything else
+# is deleted normally.
+function Remove-ModTree([string]$Path) {
+    $item = Get-Item -LiteralPath $Path -Force
+    if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        if ($item.PSIsContainer) { [IO.Directory]::Delete($item.FullName) } else { [IO.File]::Delete($item.FullName) }
+        return
+    }
+    [IO.File]::SetAttributes($item.FullName, [IO.FileAttributes]::Normal)
+    if ($item.PSIsContainer) {
+        foreach ($child in @(Get-ChildItem -LiteralPath $item.FullName -Force)) { Remove-ModTree $child.FullName }
+        [IO.Directory]::Delete($item.FullName)
+    } else {
+        [IO.File]::Delete($item.FullName)
+    }
+}
 # Looks in the places a Witcher 3 install usually is: Steam libraries, GOG, Epic
 # and the usual folders on every fixed drive.
 function Find-GameDirs {
@@ -106,7 +119,7 @@ function Resolve-GameDir {
         return [IO.Path]::GetFullPath($given).TrimEnd('\')
     }
     # Run from <game>\mods\<mod>: that game is the one to use, no searching needed.
-    $modsDir = Split-Path (Split-Path $env:W3M_SELF -Parent) -Parent
+    $modsDir = Split-Path (Split-Path $SelfPath -Parent) -Parent
     if ((Split-Path $modsDir -Leaf) -eq 'mods' -and (Test-GameDir (Split-Path $modsDir -Parent))) {
         $here = [IO.Path]::GetFullPath((Split-Path $modsDir -Parent)).TrimEnd('\')
         Write-Host "Using the game folder this mod is in: $here"
@@ -197,11 +210,11 @@ try {
     }
 
     if (Test-Path -LiteralPath $modDir) {
-        Remove-Item -LiteralPath $modDir -Recurse -Force
+        Remove-ModTree $modDir
         Write-Host "Removed $modDir"
     }
     foreach ($old in $legacy) {
-        Remove-Item -LiteralPath $old.FullName -Recurse -Force
+        Remove-ModTree $old.FullName
         Write-Host "Removed $($old.FullName)"
     }
     if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) {
