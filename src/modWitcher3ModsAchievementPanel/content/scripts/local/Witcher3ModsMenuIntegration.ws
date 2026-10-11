@@ -216,6 +216,15 @@ function PopulateData()
     {
         // The native tutorial root has already registered and bound to this WS menu.
         Witcher3ModsEnableView = m_flashModule.GetMemberFlashFunction("Witcher3ModsEnableAchievements");
+        if (!Witcher3ModsEnableView)
+        {
+            // The patched Flash (content/blob0.bundle) is not the one loaded, e.g. a partial install or another mod
+            // replacing the same SWF. Without it the list cannot be drawn, so explain it in the native text area.
+            m_fxSetTitle.InvokeSelfOneArg(FlashArgString(Witcher3ModsText("ui_flash_missing_title", Witcher3ModsUsePolish())));
+            m_fxSetText.InvokeSelfOneArg(FlashArgString(Witcher3ModsText("ui_flash_missing", Witcher3ModsUsePolish())));
+            m_fxShowSecondaryModulesSFF.InvokeSelfOneArg(FlashArgBool(true));
+            return;
+        }
         Witcher3ModsEnableView.InvokeSelf();
         m_initialSelectionsToIgnore = 0;
         Witcher3ModsLoadCategoryPreferences();
