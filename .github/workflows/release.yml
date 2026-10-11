@@ -60,6 +60,11 @@ jobs:
         # The .exe files are not stored in the repository: they are compiled here with the C# compiler that ships with Windows.
         run: |
           & ./tools/Build-Witcher3ModsInstallers.ps1 -OutputDirectory "$env:RUNNER_TEMP/installers" -Version $env:VERSION
+      - name: Test install.exe and uninstall.exe against a fake game folder
+        # The same end-to-end test every pull request runs, so a broken installer is never published.
+        timeout-minutes: 5
+        run: |
+          & ./tools/Test-Witcher3ModsInstallers.ps1 -InstallerDirectory "$env:RUNNER_TEMP/installers"
       - name: Package the committed cooked mod
         # REDkit is not available on hosted runners. Cook locally before merging.
         run: |
