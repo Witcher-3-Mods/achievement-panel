@@ -46,6 +46,8 @@ using System.Reflection;
         if ($LASTEXITCODE -ne 1 -or $Witcher3ModsText -notmatch 'Not a Witcher 3 folder') {
             throw "$Witcher3ModsName.exe smoke test failed (exit $LASTEXITCODE): $Witcher3ModsText"
         }
+        # The smoke test expects exit code 1. GitHub runs a step as ". script" and fails it on a leftover non-zero $LASTEXITCODE.
+        $global:LASTEXITCODE = 0
         Write-Output "Built $Witcher3ModsExe"
     }
 } finally {
