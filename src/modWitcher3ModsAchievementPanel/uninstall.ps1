@@ -1,30 +1,30 @@
-@echo off
-rem ===========================================================================
-rem  Achievement Panel installer. Double-click this file to run it, or open it in
-rem  Notepad to read it. This file is both a batch file and a PowerShell script:
-rem  the one line below starts PowerShell, which reads the rest of this file
-rem  (everything below the marker line) and runs it.
-rem
-rem  It finds your Witcher 3 folder and installs this mod from the files you
-rem  downloaded: it replaces any previous version in the mods folder.
-rem  Run it from the extracted download (keep the folders of the ZIP together).
-rem  Optional switches (used by the maintainers for testing):
-rem    /yes                 do not ask for confirmation
-rem    /game:"C:\path"      use this game folder instead of searching
-rem ===========================================================================
-set "W3M_SELF=%~f0"
-set W3M_ARGS=%*
-powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllText($env:W3M_SELF,[Text.Encoding]::UTF8); Invoke-Expression $s.Substring($s.IndexOf('#'+'POWERSHELL'))" && exit /b 0 || exit /b 1
-#POWERSHELL
+# ===========================================================================
+#  Achievement Panel uninstaller. uninstall.exe contains a copy of this script and
+#  runs it; this file is the readable source. You can also run it with PowerShell.
+#
+#  It finds your Witcher 3 folder, then removes this mod and only this mod.
+#  Optional switches (used by the maintainers for testing):
+#    /yes                 do not ask for confirmation
+#    /game:"C:\path"      use this game folder instead of searching
+#    /docs:"C:\path"      use this folder instead of Documents\The Witcher 3
+# ===========================================================================
+
 $ErrorActionPreference = 'Stop'
 
-# ---- What this installer puts where. -----------------------------------------
-$ModFolder = 'modWitcher3ModsAchievementPanel'      # copied to <game>\mods\<this folder>
+# The .exe passes its own path and its raw command line; run straight from PowerShell, this file is used instead.
+$SelfPath = $env:W3M_SELF
+if (-not $SelfPath) { $SelfPath = $PSCommandPath }
+
+# ---- What this uninstaller removes. Everything else is left alone. ----------
+$ModFolder = 'modWitcher3ModsAchievementPanel'      # <game>\mods\<this folder>
 $ModTitle  = 'Achievement Panel'
-$ConfigXml = ''      # copied to <game>\bin\config\r4game\user_config_matrix\pc\ (empty: none)
+$ConfigXml = ''      # <game>\bin\config\r4game\user_config_matrix\pc\<this file>
+$Sections  = @('Witcher3ModsAchievementPanel')       # whole sections in the *user.settings files
+$Keys      = @()           # single keys in other sections
 # -----------------------------------------------------------------------------
 
 $argText = [string]$env:W3M_ARGS
+if ($null -eq $env:W3M_ARGS) { $argText = ($args -join ' ') }
 $yes     = $argText -match '(?i)(^|\s)/yes(\s|$)'
 function Get-Switch([string]$Name) {
     if ($argText -match ('(?i)(^|\s)/' + $Name + ':(?:"([^"]*)"|(\S+))')) {
@@ -102,7 +102,7 @@ function Resolve-GameDir {
         return [IO.Path]::GetFullPath($given).TrimEnd('\')
     }
     # Run from <game>\mods\<mod>: that game is the one to use, no searching needed.
-    $modsDir = Split-Path (Split-Path $env:W3M_SELF -Parent) -Parent
+    $modsDir = Split-Path (Split-Path $SelfPath -Parent) -Parent
     if ((Split-Path $modsDir -Leaf) -eq 'mods' -and (Test-GameDir (Split-Path $modsDir -Parent))) {
         $here = [IO.Path]::GetFullPath((Split-Path $modsDir -Parent)).TrimEnd('\')
         Write-Host "Using the game folder this mod is in: $here"
@@ -127,72 +127,89 @@ function Resolve-GameDir {
     }
 }
 
-try {
-    Write-Host "$ModTitle installer"
-    Write-Host ''
-    $source = Split-Path $env:W3M_SELF -Parent
-    if (-not (Test-Path -LiteralPath (Join-Path $source 'content'))) {
-        throw "This is not the complete $ModTitle folder: no 'content' folder next to this file. Extract the whole ZIP first, then run this from the extracted folder."
+# Settings files are edited as raw bytes (Latin-1 round-trips every byte), so
+# nothing but the mod's own lines changes. Returns how many lines belong to the mod.
+$Latin1 = [Text.Encoding]::GetEncoding(28591)
+function Edit-Settings([string]$File, [bool]$Apply) {
+    $lines = [regex]::Split([IO.File]::ReadAllText($File, $Latin1), '(?<=\n)')
+    $kept = New-Object 'System.Collections.Generic.List[string]'
+    $section = ''
+    $removed = 0
+    foreach ($line in $lines) {
+        if ($line -match '^\s*\[([^\]\r\n]+)\]\s*$') { $section = $Matches[1] }
+        $drop = $Sections -contains $section
+        if (-not $drop) {
+            foreach ($k in $Keys) { if ($section -eq $k.Section -and $line -match ('^\s*' + [regex]::Escape($k.Key) + '\s*=')) { $drop = $true } }
+        }
+        if ($drop) { $removed++ } else { $kept.Add($line) }
     }
+    if ($Apply -and $removed -gt 0) {
+        Copy-Item -LiteralPath $File -Destination ($File + '.bak-uninstall-' + (Get-Date -Format 'yyyyMMdd-HHmmss'))
+        [IO.File]::WriteAllText($File, (-join $kept), $Latin1)
+    }
+    return $removed
+}
+
+try {
+    Write-Host "$ModTitle uninstaller"
+    Write-Host ''
     $game = Resolve-GameDir
-    $dest = Join-Path $game "mods\$ModFolder"
-    $sameFolder = ([IO.Path]::GetFullPath($source).TrimEnd('\') -ieq [IO.Path]::GetFullPath($dest).TrimEnd('\'))
-    # Earlier releases used a misspelled folder name. Two copies of the scripts would clash, so a copy under that name is removed.
+    $docs = Get-Switch 'docs'
+    if (-not $docs) { $docs = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'The Witcher 3' }
+
+    $modDir  = Join-Path $game "mods\$ModFolder"
+    # Also the copy that earlier releases installed under a misspelled folder name.
     $legacy = @()
     if (Test-Path -LiteralPath (Join-Path $game 'mods')) {
-        $legacy = @(Get-ChildItem -LiteralPath (Join-Path $game 'mods') -Directory -Filter 'modWitcher3ModsAch*Panel' | Where-Object { $_.Name -ne $ModFolder -and $_.FullName.TrimEnd('\') -ne [IO.Path]::GetFullPath($source).TrimEnd('\') })
+        $legacy = @(Get-ChildItem -LiteralPath (Join-Path $game 'mods') -Directory -Filter 'modWitcher3ModsAch*Panel' | Where-Object { $_.Name -ne $ModFolder })
+    }
+    $xmlPath = $null
+    if ($ConfigXml) { $xmlPath = Join-Path $game "bin\config\r4game\user_config_matrix\pc\$ConfigXml" }
+    $settings = @()
+    foreach ($name in @('user.settings', 'dx11user.settings', 'dx12user.settings')) {
+        $path = Join-Path $docs $name
+        if ((Test-Path -LiteralPath $path) -and (Edit-Settings $path $false) -gt 0) { $settings += $path }
     }
 
-    # The config XML is next to the mod folder inside the repository layout and two folders up inside the release ZIP.
-    $xmlTarget = $null
-    $xmlSource = $null
-    if ($ConfigXml) {
-        $xmlTarget = Join-Path $game "bin\config\r4game\user_config_matrix\pc\$ConfigXml"
-        foreach ($c in @((Join-Path $source "bin\config\r4game\user_config_matrix\pc\$ConfigXml"),
-                         (Join-Path $source "..\..\bin\config\r4game\user_config_matrix\pc\$ConfigXml"))) {
-            if (-not $xmlSource -and (Test-Path -LiteralPath $c)) { $xmlSource = (Resolve-Path -LiteralPath $c).Path }
-        }
-        if (-not $xmlSource -and -not (Test-Path -LiteralPath $xmlTarget)) {
-            throw "Could not find $ConfigXml next to the mod. Extract the whole ZIP, keeping its 'bin' folder, and run this again."
-        }
+    $present = @()
+    if (Test-Path -LiteralPath $modDir)  { $present += "Mod folder:        $modDir" }
+    foreach ($old in $legacy)            { $present += "Former mod folder: $($old.FullName)" }
+    if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) { $present += "Option definition: $xmlPath" }
+    foreach ($path in $settings)         { $present += "Saved option value: $path (the mod's section only)" }
+    if ($present.Count -eq 0) {
+        Write-Host "$ModTitle is not installed in $game. Nothing to remove."
+        Pause-Exit 0
     }
-
     if (Get-Process -Name 'witcher3' -ErrorAction SilentlyContinue) {
         throw 'The Witcher 3 is running. Close the game and run this again.'
     }
     Write-Host "Game folder: $game"
-    Write-Host 'This will:'
-    if ($sameFolder) { Write-Host "  - keep the mod where it already is: $dest" }
-    elseif (Test-Path -LiteralPath $dest) { Write-Host "  - replace the installed mod: $dest" }
-    else { Write-Host "  - install the mod to: $dest" }
-    if ($xmlSource) { Write-Host "  - copy the option definition to: $xmlTarget" }
-    foreach ($old in $legacy) { Write-Host "  - remove the former copy under its old folder name: $($old.FullName)" }
+    Write-Host 'This will remove:'
+    foreach ($p in $present) { Write-Host "  $p" }
+    Write-Host 'Other mods and the rest of your settings are not touched.'
     if (-not $yes) {
         $answer = Read-Host 'Continue? [Y/n]'
         if ($answer -match '^\s*n') { Write-Host 'Cancelled. Nothing was changed.'; Pause-Exit 0 }
     }
 
-    if (-not $sameFolder) {
-        if (Test-Path -LiteralPath $dest) { Remove-Item -LiteralPath $dest -Recurse -Force }
-        New-Item -ItemType Directory -Force -Path (Split-Path $dest -Parent) | Out-Null
-        Copy-Item -LiteralPath $source -Destination $dest -Recurse -Force
-        Write-Host "Installed $dest"
+    if (Test-Path -LiteralPath $modDir) {
+        Remove-Item -LiteralPath $modDir -Recurse -Force
+        Write-Host "Removed $modDir"
     }
-    foreach ($old in $legacy) { Remove-Item -LiteralPath $old.FullName -Recurse -Force; Write-Host "Removed $($old.FullName)" }
-    if ($xmlSource) {
-        New-Item -ItemType Directory -Force -Path (Split-Path $xmlTarget -Parent) | Out-Null
-        Copy-Item -LiteralPath $xmlSource -Destination $xmlTarget -Force
-        Write-Host "Installed $xmlTarget"
+    foreach ($old in $legacy) {
+        Remove-Item -LiteralPath $old.FullName -Recurse -Force
+        Write-Host "Removed $($old.FullName)"
     }
-    # The engine reads the config only from <game>\bin\config and ignores a bin folder inside the mod folder.
-    $strayBin = Join-Path $dest 'bin'
-    if ($ConfigXml -and (Test-Path -LiteralPath $strayBin)) { Remove-Item -LiteralPath $strayBin -Recurse -Force }
-
-    if (-not (Test-Path -LiteralPath (Join-Path $dest 'content'))) { throw "Installation failed: $dest has no content folder." }
-    if ($ConfigXml -and -not (Test-Path -LiteralPath $xmlTarget)) { throw "Installation failed: $xmlTarget is missing." }
+    if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) {
+        Remove-Item -LiteralPath $xmlPath -Force
+        Write-Host "Removed $xmlPath"
+    }
+    foreach ($path in $settings) {
+        $n = Edit-Settings $path $true
+        Write-Host "Removed $n line(s) from $path (a copy is next to it: *.bak-uninstall-*)"
+    }
     Write-Host ''
-    Write-Host "$ModTitle was installed."
-    Write-Host 'Start the game and let the scripts compile. Open Glossary > Achievements (after Crafting).'
+    Write-Host "$ModTitle was uninstalled."
     Pause-Exit 0
 } catch {
     Write-Host ''

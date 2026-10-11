@@ -56,10 +56,14 @@ jobs:
           if ($tag -notmatch $semver) { throw "Computed an invalid release tag: $tag" }
           Write-Output "Release tag: $tag"
           [IO.File]::AppendAllText($env:GITHUB_ENV, "TAG_NAME=$tag`nVERSION=$($tag.Substring(1))`n")
+      - name: Build install.exe and uninstall.exe from their sources
+        # The .exe files are not stored in the repository: they are compiled here with the C# compiler that ships with Windows.
+        run: |
+          & ./tools/Build-Witcher3ModsInstallers.ps1 -OutputDirectory "$env:RUNNER_TEMP/installers" -Version $env:VERSION
       - name: Package the committed cooked mod
         # REDkit is not available on hosted runners. Cook locally before merging.
         run: |
-          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip"
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
       - name: Tag the commit and publish the single release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -108,7 +112,7 @@ jobs:
           Assert-Witcher3ModsReleaseTag
           if ($existing -and -not $existing.draft) { Write-Output 'Release already published; unchanged.'; exit 0 }
           if (-not $existing) {
-            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Install the ZIP by copying its modWitcher3ModsAchievementPanel folder into the game's mods directory. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
+            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Extract the ZIP and run install.exe from its modWitcher3ModsAchievementPanel folder (or copy that folder into the game's mods directory by hand). install.exe and uninstall.exe are built from the sources next to them (Launcher.cs, install.ps1, uninstall.ps1). Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
             if ($LASTEXITCODE -ne 0) { throw 'Could not create release draft.' }
           }
           gh release upload $releaseTag $archivePath --clobber

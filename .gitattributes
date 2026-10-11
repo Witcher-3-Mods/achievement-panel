@@ -1,2 +1,0 @@
-# Batch files must keep Windows line endings, or cmd.exe can misparse them.
-*.cmd text eol=crlf
