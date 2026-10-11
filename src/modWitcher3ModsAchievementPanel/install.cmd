@@ -40,6 +40,24 @@ function Test-GameDir([string]$Path) {
     return [bool]($Path -and (Test-Path -LiteralPath (Join-Path $Path 'bin\config\r4game')) -and (Test-Path -LiteralPath (Join-Path $Path 'content\content0')))
 }
 
+# The Steam registry value is lowercase with forward slashes ("c:/program files (x86)/steam"), while the
+# drive scan below uses the usual capitalised folders. Both name the same folder, and -Unique on strings is
+# case-sensitive, so the same game was listed twice. Rewrite every path with the casing stored on disk.
+function Get-DiskCasePath([string]$Path) {
+    $full = [IO.Path]::GetFullPath($Path).TrimEnd('\')
+    try {
+        $root = [IO.Path]::GetPathRoot($full)
+        $result = $root.ToUpperInvariant()
+        foreach ($part in $full.Substring($root.Length).Split('\')) {
+            if (-not $part) { continue }
+            $entry = @([IO.Directory]::GetFileSystemEntries($result, $part))
+            if ($entry.Count -eq 0) { return $full }
+            $result = $entry[0]
+        }
+        return $result
+    } catch { return $full }
+}
+
 # Looks in the places a Witcher 3 install usually is: Steam libraries, GOG, Epic
 # and the usual folders on every fixed drive.
 function Find-GameDirs {
@@ -74,7 +92,7 @@ function Find-GameDirs {
             $found.Add((Join-Path $r $rel))
         }
     }
-    return @($found | Where-Object { Test-GameDir $_ } | ForEach-Object { [IO.Path]::GetFullPath($_).TrimEnd('\') } | Select-Object -Unique)
+    return @($found | Where-Object { Test-GameDir $_ } | ForEach-Object { Get-DiskCasePath $_ } | Sort-Object -Unique)
 }
 
 function Resolve-GameDir {
