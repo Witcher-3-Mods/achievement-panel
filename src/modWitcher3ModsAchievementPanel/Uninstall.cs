@@ -35,7 +35,8 @@ internal static class UninstallProgram
     {
         try
         {
-            ProcessStartInfo start = new ProcessStartInfo("cmd.exe");
+            // The full path of cmd.exe: a bare name would be searched for in this program's own folder first.
+            ProcessStartInfo start = new ProcessStartInfo(Path.Combine(Environment.SystemDirectory, "cmd.exe"));
             start.UseShellExecute = false;
             start.CreateNoWindow = true;
             start.Arguments = "/d /c \"ping -n 3 127.0.0.1 >nul & del /f /q \"" + Tools.SelfPath() + "\" & rmdir \"" + folder + "\"\"";
@@ -54,6 +55,14 @@ internal static class UninstallProgram
     // Returns true when the user wants the program to remove itself too.
     private static bool AskAboutLeftover(Options options, string modDir)
     {
+        // The paths go into a cmd.exe command line; if they contain a character cmd treats specially, option 2 is not offered.
+        if (!Tools.IsSafeForCmd(Tools.SelfPath()) || !Tools.IsSafeForCmd(modDir))
+        {
+            Console.WriteLine();
+            Console.WriteLine("Only uninstall.exe is left in " + modDir + ".");
+            Console.WriteLine("Its path contains a special character (one of % ^ & !), so it cannot be removed automatically.");
+            return false;
+        }
         if (options.RemoveSelf) return true;
         if (options.Yes) return false;
         Console.WriteLine();

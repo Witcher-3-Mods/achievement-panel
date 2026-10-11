@@ -284,13 +284,24 @@ internal static class Tools
     public static void CopyTree(string source, string destination)
     {
         Directory.CreateDirectory(destination);
+        // A symbolic link or junction is skipped, never followed: File.Copy would copy what a file link points to.
         foreach (string file in Directory.GetFiles(source))
+        {
+            if ((File.GetAttributes(file) & FileAttributes.ReparsePoint) != 0) continue;
             File.Copy(file, Path.Combine(destination, Path.GetFileName(file)), true);
+        }
         foreach (string directory in Directory.GetDirectories(source))
         {
             if ((File.GetAttributes(directory) & FileAttributes.ReparsePoint) != 0) continue;
             CopyTree(directory, Path.Combine(destination, Path.GetFileName(directory)));
         }
+    }
+
+    // True when a path can be put inside double quotes on a cmd.exe command line and stay plain text. cmd expands %NAME% even
+    // inside quotes, and ^, & and ! are special in other contexts, so a path with any of them is not passed to cmd at all.
+    public static bool IsSafeForCmd(string path)
+    {
+        return path.IndexOfAny(new[] { '%', '^', '&', '!', '"', '\r', '\n' }) < 0;
     }
 
     // Copies of the mod's folder under the name earlier releases used, other than 'except'.
