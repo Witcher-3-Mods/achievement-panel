@@ -1,0 +1,10 @@
+# Text files are stored with LF in the repository and checked out with LF on every platform,
+# so the release ZIP and file hashes do not depend on who built it.
+* text=auto eol=lf
+
+# Never touch the bytes of binary files, whatever Git's content heuristic says.
+*.bundle binary
+*.store  binary
+*.jpg    binary
+*.png    binary
+*.swf    binary
