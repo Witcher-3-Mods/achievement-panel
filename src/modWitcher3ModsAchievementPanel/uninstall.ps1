@@ -58,6 +58,23 @@ function Get-DiskCasePath([string]$Path) {
     } catch { return $full }
 }
 
+# Windows PowerShell 5.1's Remove-Item -Recurse can follow a junction or symbolic link inside the folder and delete the
+# contents of whatever it points to. Walk the tree instead: a link is detached (only the link is deleted), everything else
+# is deleted normally.
+function Remove-ModTree([string]$Path) {
+    $item = Get-Item -LiteralPath $Path -Force
+    if ($item.Attributes -band [IO.FileAttributes]::ReparsePoint) {
+        if ($item.PSIsContainer) { [IO.Directory]::Delete($item.FullName) } else { [IO.File]::Delete($item.FullName) }
+        return
+    }
+    [IO.File]::SetAttributes($item.FullName, [IO.FileAttributes]::Normal)
+    if ($item.PSIsContainer) {
+        foreach ($child in @(Get-ChildItem -LiteralPath $item.FullName -Force)) { Remove-ModTree $child.FullName }
+        [IO.Directory]::Delete($item.FullName)
+    } else {
+        [IO.File]::Delete($item.FullName)
+    }
+}
 # Looks in the places a Witcher 3 install usually is: Steam libraries, GOG, Epic
 # and the usual folders on every fixed drive.
 function Find-GameDirs {
@@ -193,11 +210,11 @@ try {
     }
 
     if (Test-Path -LiteralPath $modDir) {
-        Remove-Item -LiteralPath $modDir -Recurse -Force
+        Remove-ModTree $modDir
         Write-Host "Removed $modDir"
     }
     foreach ($old in $legacy) {
-        Remove-Item -LiteralPath $old.FullName -Recurse -Force
+        Remove-ModTree $old.FullName
         Write-Host "Removed $($old.FullName)"
     }
     if ($xmlPath -and (Test-Path -LiteralPath $xmlPath)) {
