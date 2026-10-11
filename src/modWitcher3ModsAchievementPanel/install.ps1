@@ -1,5 +1,5 @@
 # ===========================================================================
-#  Achievement Panel installer. install.exe contains a copy of this script and runs
+#  Achievement Panel installer. install.exe (built from this file) contains a copy of this script and runs
 #  it; this file is the readable source. You can also run it with PowerShell.
 #
 #  It finds your Witcher 3 folder and installs this mod from the files you

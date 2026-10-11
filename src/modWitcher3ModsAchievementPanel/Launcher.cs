@@ -1,6 +1,6 @@
 // Source of install.exe and uninstall.exe. Both are built from this one file by tools/Build-Witcher3ModsInstallers.ps1,
-// each with its own script (install.ps1 or uninstall.ps1) embedded as the resource "script.ps1". The script next to
-// the .exe is the readable copy of what the .exe runs; the .exe does nothing else.
+// each with its own script (install.ps1 or uninstall.ps1) embedded as the resource "script.ps1". The release ZIP carries
+// only the .exe files; this file and the scripts stay in the repository, and the .exe does nothing beyond running its script.
 using System;
 using System.Diagnostics;
 using System.IO;

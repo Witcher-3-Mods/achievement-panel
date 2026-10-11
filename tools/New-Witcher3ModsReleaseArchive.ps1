@@ -6,11 +6,12 @@ param(
 $ErrorActionPreference = 'Stop'
 $Witcher3ModsRoot = Split-Path $PSScriptRoot -Parent
 $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchievementPanel'
-# Repository files of the package. The installers' sources (install.ps1, uninstall.ps1, Launcher.cs) ship next to the built .exe files.
+# Repository files of the package. The installers' sources (install.ps1, uninstall.ps1, Launcher.cs) stay in the repository: the ZIP carries only the built .exe files, which embed the scripts.
 $Witcher3ModsSourceExpected = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','install.ps1','uninstall.ps1','Launcher.cs','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
 $Witcher3ModsSourceExpected += @('AchievementCatalog','AchievementPresenter','AchievementReadout','AchievementTracking','GameQueries','Localization','MenuIntegration') | ForEach-Object { 'content/scripts/local/Witcher3Mods' + $_ + '.ws' }
 $Witcher3ModsBuiltExpected = @('install.exe','uninstall.exe')
-$Witcher3ModsExpected = $Witcher3ModsSourceExpected + $Witcher3ModsBuiltExpected
+$Witcher3ModsRepositoryOnly = @('install.ps1','uninstall.ps1','Launcher.cs')
+$Witcher3ModsExpected = @($Witcher3ModsSourceExpected | Where-Object { $_ -notin $Witcher3ModsRepositoryOnly }) + $Witcher3ModsBuiltExpected
 if ((Get-FileHash "$Witcher3ModsRoot/LICENSE").Hash -ne (Get-FileHash "$Witcher3ModsPackage/LICENSE").Hash) { throw 'Root and packaged licenses differ.' }
 if ((Get-FileHash "$Witcher3ModsRoot/THIRD-PARTY-NOTICES.txt").Hash -ne (Get-FileHash "$Witcher3ModsPackage/THIRD-PARTY-NOTICES.txt").Hash) { throw 'Root and packaged notices differ.' }
 if ((Get-Content "$Witcher3ModsPackage/THIRD-PARTY-NOTICES.txt" -Raw).Length -lt 100) { throw 'Missing third-party notices.' }
@@ -33,13 +34,14 @@ if ($Witcher3ModsOutput.StartsWith($Witcher3ModsPackage + [IO.Path]::DirectorySe
 if (Test-Path -LiteralPath $Witcher3ModsOutput) { throw 'Refusing to overwrite an existing archive.' }
 New-Item -ItemType Directory -Force (Split-Path $Witcher3ModsOutput -Parent) | Out-Null
 
-# The archive is made from a staging copy: the repository package plus the installers built for this release.
+# The archive is made from a staging copy: the repository package without the installers' sources, plus the installers built for this release.
 $Witcher3ModsStagingRoot = Join-Path ([IO.Path]::GetTempPath()) ('w3m-stage-' + [Guid]::NewGuid().ToString('N'))
 $Witcher3ModsStage = Join-Path $Witcher3ModsStagingRoot 'modWitcher3ModsAchievementPanel'
 $Witcher3ModsZip = $null
 try {
     New-Item -ItemType Directory -Force $Witcher3ModsStagingRoot | Out-Null
     Copy-Item -LiteralPath $Witcher3ModsPackage -Destination $Witcher3ModsStage -Recurse
+    foreach ($Witcher3ModsOmitted in $Witcher3ModsRepositoryOnly) { Remove-Item -LiteralPath (Join-Path $Witcher3ModsStage $Witcher3ModsOmitted) -Force }
     foreach ($Witcher3ModsBuilt in $Witcher3ModsBuiltExpected) { Copy-Item -LiteralPath (Join-Path $Witcher3ModsInstallers $Witcher3ModsBuilt) -Destination $Witcher3ModsStage }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     [IO.Compression.ZipFile]::CreateFromDirectory($Witcher3ModsStage, $Witcher3ModsOutput, [IO.Compression.CompressionLevel]::Optimal, $true)
