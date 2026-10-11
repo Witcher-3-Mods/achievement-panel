@@ -902,6 +902,21 @@ function Witcher3ModsText(Witcher3ModsKey : string, Witcher3ModsPolish : bool) :
         if (Witcher3ModsPolish) return "<font color='#00FF00'><b>Osiągnięcia włączone</b></font>";
         return "<font color='#00FF00'><b>Achievements enabled</b></font>";
     }
+    if (Witcher3ModsKey == "ui_flash_missing")
+    {
+        if (Witcher3ModsPolish) return "Pliki interfejsu panelu (blob0.bundle i metadata.store) nie są ładowane, więc lista osiągnięć nie może zostać wyświetlona. Zamknij grę i zainstaluj mod ponownie za pomocą install.cmd albo skopiuj cały folder modWitcher3ModsAchievementPanel do folderu mods w grze, razem z content\\blob0.bundle i content\\metadata.store. Jeśli lista nadal jest pusta, możliwy jest konflikt z innym modem, który podmienia interfejs Glosariusza.";
+        return "The panel's interface files (blob0.bundle and metadata.store) are not being loaded, so the achievement list cannot be shown. Close the game and reinstall the mod with install.cmd, or copy the whole modWitcher3ModsAchievementPanel folder into the game's mods folder, including content\\blob0.bundle and content\\metadata.store. If it is still empty, another mod that replaces the Glossary interface may be conflicting with this one.";
+    }
+    if (Witcher3ModsKey == "ui_flash_missing_title")
+    {
+        if (Witcher3ModsPolish) return "Nie załadowano interfejsu panelu osiągnięć";
+        return "Achievement Panel interface not loaded";
+    }
+    if (Witcher3ModsKey == "ui_flash_missing_toast")
+    {
+        if (Witcher3ModsPolish) return "Panel osiągnięć: nie załadowano plików interfejsu, więc lista jest pusta. Zainstaluj mod ponownie (szczegóły w panelu).";
+        return "Achievement Panel: interface files not loaded, so the list is empty. Reinstall the mod (details in the panel).";
+    }
     if (Witcher3ModsKey == "ui_hard")
     {
         if (Witcher3ModsPolish) return "Krew, pot i łzy";
