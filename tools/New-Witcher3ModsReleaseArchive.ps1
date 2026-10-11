@@ -6,11 +6,11 @@ param(
 $ErrorActionPreference = 'Stop'
 $Witcher3ModsRoot = Split-Path $PSScriptRoot -Parent
 $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchievementPanel'
-# Repository files of the package. The installers' sources (install.ps1, uninstall.ps1, Launcher.cs) stay in the repository: the ZIP carries only the built .exe files, which embed the scripts.
-$Witcher3ModsSourceExpected = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','install.ps1','uninstall.ps1','Launcher.cs','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
+# Repository files of the package. The installers' sources (Common.cs, Install.cs, Uninstall.cs) stay in the repository: the ZIP carries only the built .exe files.
+$Witcher3ModsSourceExpected = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','Common.cs','Install.cs','Uninstall.cs','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
 $Witcher3ModsSourceExpected += @('AchievementCatalog','AchievementPresenter','AchievementReadout','AchievementTracking','GameQueries','Localization','MenuIntegration') | ForEach-Object { 'content/scripts/local/Witcher3Mods' + $_ + '.ws' }
 $Witcher3ModsBuiltExpected = @('install.exe','uninstall.exe')
-$Witcher3ModsRepositoryOnly = @('install.ps1','uninstall.ps1','Launcher.cs')
+$Witcher3ModsRepositoryOnly = @('Common.cs','Install.cs','Uninstall.cs')
 $Witcher3ModsExpected = @($Witcher3ModsSourceExpected | Where-Object { $_ -notin $Witcher3ModsRepositoryOnly }) + $Witcher3ModsBuiltExpected
 if ((Get-FileHash "$Witcher3ModsRoot/LICENSE").Hash -ne (Get-FileHash "$Witcher3ModsPackage/LICENSE").Hash) { throw 'Root and packaged licenses differ.' }
 if ((Get-FileHash "$Witcher3ModsRoot/THIRD-PARTY-NOTICES.txt").Hash -ne (Get-FileHash "$Witcher3ModsPackage/THIRD-PARTY-NOTICES.txt").Hash) { throw 'Root and packaged notices differ.' }

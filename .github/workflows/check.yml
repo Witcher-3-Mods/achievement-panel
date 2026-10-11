@@ -27,6 +27,12 @@ jobs:
       - name: Build install.exe and uninstall.exe from their sources
         run: |
           & ./tools/Build-Witcher3ModsInstallers.ps1 -OutputDirectory "$env:RUNNER_TEMP/installers" -Version 0.0.0
+      - name: Test install.exe and uninstall.exe against a fake game folder
+        # Installs, uninstalls from inside the installed mod folder (the way users run it), checks the 1/2 prompt, the
+        # self-removal and that a junction in the mod folder is never followed. Fails the job on the first wrong result.
+        timeout-minutes: 5
+        run: |
+          & ./tools/Test-Witcher3ModsInstallers.ps1 -InstallerDirectory "$env:RUNNER_TEMP/installers"
       - name: Package and verify the release ZIP
         run: |
           & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/check.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
