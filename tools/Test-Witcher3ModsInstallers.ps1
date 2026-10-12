@@ -45,6 +45,24 @@ try {
     $gameArgument = '/game:"' + $game + '"'
     $docsArgument = '/docs:"' + $docs + '"'
 
+    # One game must be listed once: a folder written the way the Steam registry stores it (lowercase, forward slashes) has to come
+    # back with the casing stored on disk, or the same game appears twice. The function is read out of each script itself, not copied,
+    # and the script must really use it when it builds the list of game folders.
+    foreach ($name in 'install.cmd', 'uninstall.cmd') {
+        $scriptText = [IO.File]::ReadAllText("$Witcher3ModsPackage\$name")
+        $scriptBody = $scriptText.Substring($scriptText.IndexOf('#POWERSHELL'))
+        $parseErrors = $null
+        $tokens = $null
+        $tree = [Management.Automation.Language.Parser]::ParseInput($scriptBody, [ref]$tokens, [ref]$parseErrors)
+        $function = $tree.Find({ param($node) $node -is [Management.Automation.Language.FunctionDefinitionAst] -and $node.Name -eq 'Get-DiskCasePath' }, $true)
+        Assert-Witcher3Mods (($parseErrors.Count -eq 0) -and ($null -ne $function)) "$name parses and defines Get-DiskCasePath"
+        . ([scriptblock]::Create($function.Extent.Text))
+        $storedPath = Join-Path $env:SystemRoot 'System32'
+        $registryStyle = $storedPath.ToLowerInvariant().Replace('\', '/')
+        Assert-Witcher3Mods ((Get-DiskCasePath $registryStyle) -ceq (Get-DiskCasePath $storedPath)) "$name writes a registry-style path with the casing stored on disk"
+        Assert-Witcher3Mods (([regex]::Matches($scriptBody, 'Get-DiskCasePath')).Count -ge 2) "$name uses Get-DiskCasePath when it lists the game folders"
+    }
+
     # Install into the fake game, once clean (which also removes the copy under the misspelled name) and once over an existing copy.
     $output = Invoke-Witcher3ModsScript "$download\install.cmd" "/yes $gameArgument"
     Assert-Witcher3Mods ($output -match 'was installed') 'install.cmd reports success'

@@ -8,6 +8,6 @@ For noncommercial use with The Witcher 3: Wild Hunt.
 
 Installation steps, features and screenshots are in the README of the project repository, so they are not duplicated in this package:
 
-https://github.com/Witcher-3-Mods/Achievement-Panel/blob/main/README.md
+https://github.com/Witcher-3-Mods/achievement-panel/blob/main/README.md
 
 See LICENSE and THIRD-PARTY-NOTICES.txt for project and third-party notices.
