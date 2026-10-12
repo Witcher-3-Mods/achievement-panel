@@ -2,6 +2,10 @@
 # so the release ZIP and file hashes do not depend on who built it.
 * text=auto eol=lf
 
+# Batch files must keep Windows line endings, or cmd.exe can misparse them. This line must stay
+# below the one above: for a given file the last matching rule wins.
+*.cmd text eol=crlf
+
 # Never touch the bytes of binary files, whatever Git's content heuristic says.
 *.bundle binary
 *.store  binary

@@ -126,12 +126,12 @@ Test cold open, reopen, native/custom transitions and cancellation; distinguish 
 
 **Impact: HIGH**
 
-The user removed the automated test suite. Do not add test files, fixtures or CI/skill test stages unless requested. Verify changes through these rules, direct source/artifact inspection and relevant in-game observations. Keep production safeguards such as validated paths, package allowlists, byte integrity and release-tag verification; removing tests does not authorize removing those safeguards.
+The user removed the general automated test suite. The installer test (`tools/Test-Witcher3ModsInstallers.ps1`, run by the pull-request check and before every release) exists at the user's request and covers install.cmd and uninstall.cmd only. Do not add other test files, fixtures or CI/skill test stages unless requested. Verify changes through these rules, direct source/artifact inspection and relevant in-game observations. Keep production safeguards such as validated paths, package allowlists, byte integrity and release-tag verification; removing tests does not authorize removing those safeguards.
 
 **Incorrect:**
 
 ```text
-Recreate src/tests or add a regression stage after the user requested its removal.
+Recreate src/tests or add a regression stage beyond the installer test after the user requested its removal.
 ```
 
 **Correct:**
