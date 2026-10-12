@@ -89,6 +89,6 @@ Link/name `src/modWitcher3ModsAchievementPanel`, identify a diagnostic build as 
 
 Report implemented scope, the manual/source/build-integrity checks actually performed and unresolved runtime observations. If a correction changes the package, rebuild when required and identify the replacement folder. WitcherScript compilation and first-open, reopen and tab-switch rendering still require the target game or suitable editor validation; JPEXS and cooking do not prove them.
 
-There is no automated-test phase. Preserve production build safeguards (input validation, byte/hash comparisons, safe paths and release-tag checks); they prevent invalid publication and are not a replacement test suite. Run guard only when requested. Do not install, commit, push or publish without the applicable authorization.
+There is no automated-test phase beyond the installer test (`tools/Test-Witcher3ModsInstallers.ps1`, run by the pull-request check and the release job). Preserve production build safeguards (input validation, byte/hash comparisons, safe paths and release-tag checks); they prevent invalid publication and are not a replacement test suite. Run guard only when requested. Do not install, commit, push or publish without the applicable authorization.
 
 Required order: tool preflight → source research → implementation → build/integrity checks → user notification → final result.
