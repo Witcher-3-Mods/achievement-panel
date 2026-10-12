@@ -29,34 +29,33 @@ Pinned achievements and their updating progress counters show during gameplay, b
 - Pins and category choices are saved in your user settings and shared across saves. Persistence across game restarts still needs in-game verification.
 - Read-only display: the mod never unlocks achievements or changes your tracked quest.
 
-Compatibility: the unlock interpretation was checked against Steam on the development setup, not on every platform or build. A uniform all-locked or all-unlocked response currently produces a readout error, and story-block detection is incomplete.
+Compatibility: the unlock interpretation was checked against Steam on the development setup, not on every platform or build. A response in which all 78 achievements are earned currently produces a readout error, and story-block detection is incomplete.
+
+## Download
+
+Each release has two ZIPs with the same mod:
+
+- **Automatic**: includes `install.exe` and `uninstall.exe`. The easy way on Windows.
+- **Manual**: no `.exe` files at all (nothing for an antivirus to flag). You copy the folder yourself, see [below](#install-or-update-by-hand).
 
 ## Install automatically (Windows)
 
-1. Close the game. Download the release ZIP from the **Releases** page and extract it anywhere.
-2. Open the extracted `modWitcher3ModsAchievementPanel` folder and double-click **`install.exe`**.
-3. The installer finds your Witcher 3 folder (Steam, GOG, Epic or the usual folders on every drive, and it asks for the path if it cannot find it) and replaces any previous version of the mod in `mods`. A copy installed by an earlier release under a misspelled folder name is removed too, so two copies of the scripts never clash.
+1. Close the game. Download the **Automatic** ZIP from the **Releases** page and extract it anywhere.
+2. In the extracted `modWitcher3ModsAchievementPanel` folder, double-click **`install.exe`**. It finds your Witcher 3 folder (Steam, GOG, Epic or the usual folders on every drive; it asks for the path if needed) and replaces any previous version, including one installed under an old misspelled folder name.
 
-To remove the mod, double-click **`uninstall.exe`**, either in the extracted folder or in `mods\modWitcher3ModsAchievementPanel` inside the game folder. It removes the mod folder and your saved pinned achievements (only that mod's section in the `*user.settings` files in `Documents\The Witcher 3`, after making a copy of each file it edits) and nothing else.
+To remove the mod, double-click **`uninstall.exe`** (in the extracted folder or in `mods\modWitcher3ModsAchievementPanel`). It removes the mod folder and your saved pins (only the mod's section in the `*user.settings` files in `Documents\The Witcher 3`, after making a copy of each file it edits) and nothing else. Windows cannot delete a program while it runs, so when started from inside the mod folder it leaves that one file behind and asks how to finish: **1** to delete the folder yourself, **2** to let the program remove itself (some antivirus programs may warn about that).
 
-Windows cannot delete a program while it is running, so when you run `uninstall.exe` from inside `mods\modWitcher3ModsAchievementPanel`, that one file is left behind. At the end the program asks how to finish: type **1** to delete the folder yourself, or **2** to have the program remove itself too (a short background command deletes `uninstall.exe` and its folder right after the window closes; some antivirus programs may warn about a program that deletes itself). Anything other than 1 or 2 asks again.
+The `.exe` files are plain C# programs that run no PowerShell or other script. GitHub builds them from [`src/modWitcher3ModsAchievementPanel`](src/modWitcher3ModsAchievementPanel) (`Common.cs`, `Install.cs`, `Uninstall.cs`; build script: [`tools/Build-Witcher3ModsInstallers.ps1`](tools/Build-Witcher3ModsInstallers.ps1)), so you can read exactly what they do. They are not code-signed, so Windows SmartScreen or your antivirus may warn: choose **More info, Run anyway**, or use the Manual package.
 
-The two `.exe` files are not stored in the repository: GitHub builds them when a release is made, from the sources in [`src/modWitcher3ModsAchievementPanel`](src/modWitcher3ModsAchievementPanel) (`Common.cs`, `Install.cs`, `Uninstall.cs`; build script: [`tools/Build-Witcher3ModsInstallers.ps1`](tools/Build-Witcher3ModsInstallers.ps1)). They are ordinary Windows programs written in C#: they do not run PowerShell or any other script, so you can read exactly what they do in the repository. The files are not code-signed, so Windows SmartScreen or your antivirus may warn about a downloaded `.exe`: choose **More info, Run anyway** if you trust it, or install by hand as described below.
-
-## Install or update by hand — Steam
-
-Prefer to do it by hand? Follow these steps instead of `install.exe`.
+## Install or update by hand
 
 Requires the PC next-gen version of The Witcher 3. REDkit is not required to play. Back up your saves and mod installation before updating.
 
-1. Close the game. In Steam, right-click **The Witcher 3 → Manage → Browse local files**.
-2. Open or create the `mods` folder. Typical locations:
-   - Default: `C:\Program Files (x86)\Steam\steamapps\common\The Witcher 3\mods\`
-   - Another Steam library: `D:\SteamLibrary\steamapps\common\The Witcher 3\mods\`
-3. For an update, move the previous mod folder **outside `mods`** first. That includes a folder from an earlier release with a slightly different (misspelled) name. Do not merge this modular version with the old single-file version.
-4. Copy this repository's entire `src/modWitcher3ModsAchievementPanel` folder into `mods`. The repository folder holds the installers' sources (`Common.cs`, `Install.cs`, `Uninstall.cs`) but not the `.exe` files; the game ignores those sources. If using a release ZIP, copy its top-level `modWitcher3ModsAchievementPanel` folder instead. Its `.ws` files must end up in:
-   `mods\modWitcher3ModsAchievementPanel\content\scripts\local\`
-5. Launch the game, allow script compilation, and load your save.
+1. Close the game and open its `mods` folder (create it if missing). On Steam: right-click the game → **Manage → Browse local files**; typically `C:\Program Files (x86)\Steam\steamapps\common\The Witcher 3\mods\`.
+2. For an update, first move the previous mod folder **outside `mods`**, including one from an earlier release with a slightly different (misspelled) name. Do not merge this modular version with the old single-file version.
+3. Copy the `modWitcher3ModsAchievementPanel` folder from the **Manual** ZIP into `mods`; its `.ws` files must end up in `mods\modWitcher3ModsAchievementPanel\content\scripts\local\`. Start the game, allow script compilation and load your save.
+
+Instead of a ZIP you can copy this repository's `src/modWitcher3ModsAchievementPanel` folder; it also holds the installers' sources, which the game ignores.
 
 To uninstall by hand, close the game and move the panel folder outside `mods`. Keep backups outside that folder too.
 

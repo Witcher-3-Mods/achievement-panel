@@ -33,6 +33,9 @@ jobs:
         timeout-minutes: 5
         run: |
           & ./tools/Test-Witcher3ModsInstallers.ps1 -InstallerDirectory "$env:RUNNER_TEMP/installers"
-      - name: Package and verify the release ZIP
+      - name: Package and verify the Automatic release ZIP (with install.exe and uninstall.exe)
         run: |
-          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/check.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Automatic -OutputPath "$env:RUNNER_TEMP/check-automatic.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
+      - name: Package and verify the Manual release ZIP (no .exe)
+        run: |
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Manual -OutputPath "$env:RUNNER_TEMP/check-manual.zip"
