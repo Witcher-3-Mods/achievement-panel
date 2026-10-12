@@ -6,7 +6,8 @@ param(
 $ErrorActionPreference = 'Stop'
 $Witcher3ModsRoot = Split-Path $PSScriptRoot -Parent
 $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchievementPanel'
-$Witcher3ModsModName = 'modWitcher3ModsAchievementPanel'
+# Top-level folder inside the ZIP, and so in the game's mods folder. The mod000_ prefix makes the game load it before other mods, so its patched Glossary Flash wins over mods (e.g. Smooth UI Remastered) that replace the same file. The repository folder keeps its name.
+$Witcher3ModsModName = 'mod000_Witcher3ModsAchievementPanel'
 $Witcher3ModsMod = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
 $Witcher3ModsMod += @('AchievementCatalog','AchievementPresenter','AchievementReadout','AchievementTracking','GameQueries','Localization','MenuIntegration') | ForEach-Object { 'content/scripts/local/Witcher3Mods' + $_ + '.ws' }
 $Witcher3ModsScripts = @('install.cmd','uninstall.cmd')

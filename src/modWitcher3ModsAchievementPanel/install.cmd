@@ -19,7 +19,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllTex
 $ErrorActionPreference = 'Stop'
 
 # ---- What this installer puts where. -----------------------------------------
-$ModFolder = 'modWitcher3ModsAchievementPanel'      # copied to <game>\mods\<this folder>
+$ModFolder = 'mod000_Witcher3ModsAchievementPanel'      # copied to <game>\mods\<this folder>; mod000_ sorts it first, so its Glossary Flash wins over other UI mods that replace the same file
 $ModTitle  = 'Achievement Panel'
 $ConfigXml = ''      # copied to <game>\bin\config\r4game\user_config_matrix\pc\ (empty: none)
 # -----------------------------------------------------------------------------
@@ -155,7 +155,7 @@ try {
     $game = Resolve-GameDir
     $dest = Join-Path $game "mods\$ModFolder"
     $sameFolder = ([IO.Path]::GetFullPath($source).TrimEnd('\') -ieq [IO.Path]::GetFullPath($dest).TrimEnd('\'))
-    # Earlier releases used a misspelled folder name. Two copies of the scripts would clash, so a copy under that name is removed.
+    # Earlier releases used the folder name modWitcher3ModsAchievementPanel (and, before that, a misspelled one). Two copies of the scripts would clash, so a copy under such a name is removed.
     $legacy = @()
     if (Test-Path -LiteralPath (Join-Path $game 'mods')) {
         $legacy = @(Get-ChildItem -LiteralPath (Join-Path $game 'mods') -Directory -Filter 'modWitcher3ModsAch*Panel' | Where-Object { $_.Name -ne $ModFolder -and $_.FullName.TrimEnd('\') -ne [IO.Path]::GetFullPath($source).TrimEnd('\') })
