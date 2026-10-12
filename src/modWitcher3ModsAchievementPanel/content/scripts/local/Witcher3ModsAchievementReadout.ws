@@ -88,8 +88,9 @@ class Witcher3ModsAchievementReadout extends CObject
             // Fixed temporary interpretation; no account reference or mode selection.
             if (!Witcher3ModsSnapshots[Witcher3ModsIndex].Witcher3ModsEngine) Witcher3ModsEarnedCount += 1;
         }
-        // Neither native API exposes read success. Zero/all unlocked cannot yet be
-        // distinguished from a constant failed response, so keep the panel error.
-        return Witcher3ModsEarnedCount > 0 && Witcher3ModsEarnedCount < Witcher3ModsSnapshots.Size();
+        // Neither native API exposes read success. Zero earned is accepted on the user's
+        // instruction (a fresh account has none). All earned still cannot be distinguished
+        // from a constant failed response, so that case keeps the panel error.
+        return Witcher3ModsEarnedCount < Witcher3ModsSnapshots.Size();
     }
 }
