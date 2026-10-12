@@ -24,7 +24,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -Command "$s=[IO.File]::ReadAllTex
 $ErrorActionPreference = 'Stop'
 
 # ---- What this uninstaller removes. Everything else is left alone. ----------
-$ModFolder = 'modWitcher3ModsAchievementPanel'      # <game>\mods\<this folder>
+$ModFolder = 'mod000_Witcher3ModsAchievementPanel'      # <game>\mods\<this folder>
 $ModTitle  = 'Achievement Panel'
 $ConfigXml = ''      # <game>\bin\config\r4game\user_config_matrix\pc\<this file>
 $Sections  = @('Witcher3ModsAchievementPanel')       # whole sections in the *user.settings files
@@ -183,7 +183,7 @@ try {
     if (-not $docs) { $docs = Join-Path ([Environment]::GetFolderPath('MyDocuments')) 'The Witcher 3' }
 
     $modDir  = Join-Path $game "mods\$ModFolder"
-    # Also the copy that earlier releases installed under a misspelled folder name.
+    # Also the copy that earlier releases installed under the former folder name modWitcher3ModsAchievementPanel or a misspelled one.
     $legacy = @()
     if (Test-Path -LiteralPath (Join-Path $game 'mods')) {
         $legacy = @(Get-ChildItem -LiteralPath (Join-Path $game 'mods') -Directory -Filter 'modWitcher3ModsAch*Panel' | Where-Object { $_.Name -ne $ModFolder })

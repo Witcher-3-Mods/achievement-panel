@@ -118,7 +118,7 @@ jobs:
           Assert-Witcher3ModsReleaseTag
           if ($existing -and -not $existing.draft) { Write-Output 'Release already published; unchanged.'; exit 0 }
           if (-not $existing) {
-            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Two packages. Automatic: extract the ZIP and double-click install.cmd in its modWitcher3ModsAchievementPanel folder; install.cmd and uninstall.cmd are plain text scripts (open them in Notepad to read them). Manual: the same mod folder without the scripts; copy modWitcher3ModsAchievementPanel into the game's mods directory by hand. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
+            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Two packages. Automatic: extract the ZIP and double-click install.cmd in its mod000_Witcher3ModsAchievementPanel folder; install.cmd and uninstall.cmd are plain text scripts (open them in Notepad to read them). Manual: the same mod folder without the scripts; copy mod000_Witcher3ModsAchievementPanel into the game's mods directory by hand. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
             if ($LASTEXITCODE -ne 0) { throw 'Could not create release draft.' }
           }
           gh release upload $releaseTag $archivePaths[0] $archivePaths[1] --clobber
