@@ -56,6 +56,12 @@ jobs:
           if ($tag -notmatch $semver) { throw "Computed an invalid release tag: $tag" }
           Write-Output "Release tag: $tag"
           [IO.File]::AppendAllText($env:GITHUB_ENV, "TAG_NAME=$tag`nVERSION=$($tag.Substring(1))`n")
+      - name: Test install.cmd and uninstall.cmd against a fake game folder
+        # Runs the real scripts the way a double-click does: install, overwrite, uninstall from inside the mod folder, the
+        # confirmation, cancelling, and a folder that is not a game. Fails the job on the first wrong result.
+        timeout-minutes: 5
+        run: |
+          & ./tools/Test-Witcher3ModsInstallers.ps1
       - name: Package the committed cooked mod (Automatic, with install.cmd and uninstall.cmd)
         # REDkit is not available on hosted runners. Cook locally before merging.
         run: |

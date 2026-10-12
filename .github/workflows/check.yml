@@ -24,6 +24,12 @@ jobs:
       - name: Generated localization is up to date
         run: |
           & ./tools/Build-Witcher3ModsLocales.ps1 -Check
+      - name: Test install.cmd and uninstall.cmd against a fake game folder
+        # Runs the real scripts the way a double-click does: install, overwrite, uninstall from inside the mod folder, the
+        # confirmation, cancelling, and a folder that is not a game. Fails the job on the first wrong result.
+        timeout-minutes: 5
+        run: |
+          & ./tools/Test-Witcher3ModsInstallers.ps1
       - name: Package and verify the Automatic release ZIP (with install.cmd and uninstall.cmd)
         run: |
           & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Automatic -OutputPath "$env:RUNNER_TEMP/check-automatic.zip"
