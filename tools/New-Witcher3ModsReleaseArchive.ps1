@@ -1,7 +1,9 @@
 param(
     [Parameter(Mandatory=$true)][string]$OutputPath,
-    # Folder with install.exe and uninstall.exe, built by tools/Build-Witcher3ModsInstallers.ps1. They are build output, not repository files.
-    [Parameter(Mandatory=$true)][string]$InstallerDirectory
+    # Automatic: the mod folder plus install.exe and uninstall.exe. Manual: the mod folder alone, with no program in it, to be copied into the game's mods folder by hand.
+    [ValidateSet('Automatic','Manual')][string]$Variant = 'Automatic',
+    # Folder with install.exe and uninstall.exe, built by tools/Build-Witcher3ModsInstallers.ps1 (Automatic only). They are build output, not repository files.
+    [string]$InstallerDirectory
 )
 $ErrorActionPreference = 'Stop'
 $Witcher3ModsRoot = Split-Path $PSScriptRoot -Parent
@@ -9,7 +11,7 @@ $Witcher3ModsPackage = Join-Path $Witcher3ModsRoot 'src/modWitcher3ModsAchieveme
 # Repository files of the package. The installers' sources (Common.cs, Install.cs, Uninstall.cs) stay in the repository: the ZIP carries only the built .exe files.
 $Witcher3ModsSourceExpected = @('LICENSE','THIRD-PARTY-NOTICES.txt','README.md','Common.cs','Install.cs','Uninstall.cs','locales/en.json','locales/pl.json','content/blob0.bundle','content/metadata.store')
 $Witcher3ModsSourceExpected += @('AchievementCatalog','AchievementPresenter','AchievementReadout','AchievementTracking','GameQueries','Localization','MenuIntegration') | ForEach-Object { 'content/scripts/local/Witcher3Mods' + $_ + '.ws' }
-$Witcher3ModsBuiltExpected = @('install.exe','uninstall.exe')
+$Witcher3ModsBuiltExpected = @(if ($Variant -eq 'Automatic') { 'install.exe'; 'uninstall.exe' })
 $Witcher3ModsRepositoryOnly = @('Common.cs','Install.cs','Uninstall.cs')
 $Witcher3ModsExpected = @($Witcher3ModsSourceExpected | Where-Object { $_ -notin $Witcher3ModsRepositoryOnly }) + $Witcher3ModsBuiltExpected
 if ((Get-FileHash "$Witcher3ModsRoot/LICENSE").Hash -ne (Get-FileHash "$Witcher3ModsPackage/LICENSE").Hash) { throw 'Root and packaged licenses differ.' }
@@ -24,7 +26,10 @@ foreach ($Witcher3ModsFile in $Witcher3ModsFiles) {
     $Witcher3ModsRelative = $Witcher3ModsFile.FullName.Substring($Witcher3ModsPackage.Length + 1).Replace('\','/')
     if ($Witcher3ModsRelative -notin $Witcher3ModsSourceExpected -or $Witcher3ModsFile.Length -eq 0) { throw "Invalid package member: $Witcher3ModsRelative" }
 }
-$Witcher3ModsInstallers = [IO.Path]::GetFullPath($InstallerDirectory)
+if ($Variant -eq 'Automatic') {
+    if (-not $InstallerDirectory) { throw 'The Automatic package needs -InstallerDirectory.' }
+    $Witcher3ModsInstallers = [IO.Path]::GetFullPath($InstallerDirectory)
+}
 foreach ($Witcher3ModsBuilt in $Witcher3ModsBuiltExpected) {
     $Witcher3ModsBuiltPath = Join-Path $Witcher3ModsInstallers $Witcher3ModsBuilt
     if (-not (Test-Path -LiteralPath $Witcher3ModsBuiltPath -PathType Leaf) -or (Get-Item -LiteralPath $Witcher3ModsBuiltPath).Length -eq 0) { throw "Missing built installer: $Witcher3ModsBuiltPath" }
@@ -34,7 +39,8 @@ if ($Witcher3ModsOutput.StartsWith($Witcher3ModsPackage + [IO.Path]::DirectorySe
 if (Test-Path -LiteralPath $Witcher3ModsOutput) { throw 'Refusing to overwrite an existing archive.' }
 New-Item -ItemType Directory -Force (Split-Path $Witcher3ModsOutput -Parent) | Out-Null
 
-# The archive is made from a staging copy: the repository package without the installers' sources, plus the installers built for this release.
+# The archive is made from a staging copy: the repository package without the installers' sources, plus (Automatic only) the installers built for this release.
+# Every member is checked against an exact list, so the Manual package cannot contain an .exe.
 $Witcher3ModsStagingRoot = Join-Path ([IO.Path]::GetTempPath()) ('w3m-stage-' + [Guid]::NewGuid().ToString('N'))
 $Witcher3ModsStage = Join-Path $Witcher3ModsStagingRoot 'modWitcher3ModsAchievementPanel'
 $Witcher3ModsZip = $null
@@ -66,4 +72,4 @@ try {
     if ($Witcher3ModsZip) { $Witcher3ModsZip.Dispose() }
     Remove-Item -LiteralPath $Witcher3ModsStagingRoot -Recurse -Force -ErrorAction SilentlyContinue
 }
-Write-Output "Verified release ZIP: $Witcher3ModsOutput"
+Write-Output "Verified $Variant release ZIP: $Witcher3ModsOutput"

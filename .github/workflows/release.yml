@@ -65,10 +65,13 @@ jobs:
         timeout-minutes: 5
         run: |
           & ./tools/Test-Witcher3ModsInstallers.ps1 -InstallerDirectory "$env:RUNNER_TEMP/installers"
-      - name: Package the committed cooked mod
+      - name: Package the committed cooked mod (Automatic, with the installers)
         # REDkit is not available on hosted runners. Cook locally before merging.
         run: |
-          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Automatic -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-Automatic-$env:VERSION.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
+      - name: Package the committed cooked mod (Manual, no .exe)
+        run: |
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Manual -OutputPath "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-Manual-$env:VERSION.zip"
       - name: Tag the commit and publish the single release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -76,7 +79,8 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $releaseTag = $env:TAG_NAME
-          $archivePath = "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-$env:VERSION.zip"
+          $archivePaths = @("$env:RUNNER_TEMP/$env:MOD_ARCHIVE-Automatic-$env:VERSION.zip", "$env:RUNNER_TEMP/$env:MOD_ARCHIVE-Manual-$env:VERSION.zip")
+          foreach ($archivePath in $archivePaths) { if (-not (Test-Path -LiteralPath $archivePath -PathType Leaf)) { throw "Missing release package: $archivePath" } }
           if ($env:GH_REPO -notmatch '^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$') { throw 'Invalid repository identity.' }
           $Witcher3ModsApi = "https://api.github.com/repos/$env:GH_REPO"
           $Witcher3ModsHeaders = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json' }
@@ -117,12 +121,12 @@ jobs:
           Assert-Witcher3ModsReleaseTag
           if ($existing -and -not $existing.draft) { Write-Output 'Release already published; unchanged.'; exit 0 }
           if (-not $existing) {
-            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Extract the ZIP and run install.exe from its modWitcher3ModsAchievementPanel folder (or copy that folder into the game's mods directory by hand). install.exe and uninstall.exe are built from the sources in the repository (Launcher.cs, install.ps1, uninstall.ps1) at this commit. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
+            gh release create $releaseTag --verify-tag --title "$env:MOD_TITLE $env:VERSION" --notes "Two packages. Automatic: extract the ZIP and run install.exe from its modWitcher3ModsAchievementPanel folder; install.exe and uninstall.exe are built from the sources in the repository (Common.cs, Install.cs, Uninstall.cs) at this commit and are not code-signed. Manual: the same mod folder without any .exe; copy modWitcher3ModsAchievementPanel into the game's mods directory by hand. Built from commit $env:RELEASE_SHA. Includes third-party notices. Runtime validation must be performed in game." --draft
             if ($LASTEXITCODE -ne 0) { throw 'Could not create release draft.' }
           }
-          gh release upload $releaseTag $archivePath --clobber
+          gh release upload $releaseTag $archivePaths[0] $archivePaths[1] --clobber
           if ($LASTEXITCODE -ne 0) { throw 'ZIP upload failed; release remains a draft.' }
-          # Keep exactly one release: delete every other release together with its tag, only after the new ZIP is uploaded.
+          # Keep exactly one release: delete every other release together with its tag, only after both new ZIPs are uploaded.
           $others = @(gh release list --limit 1000 --json tagName --jq '.[].tagName')
           if ($LASTEXITCODE -ne 0) { throw 'Could not list releases.' }
           foreach ($other in $others) {
