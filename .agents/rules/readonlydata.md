@@ -115,18 +115,18 @@ Keep the authorized interpretation behind the readout boundary and disclose plat
 
 **Impact: HIGH**
 
-Reject constant or ambiguous responses. The current calls expose no read-success flag, so this also excludes legitimate zero/all-unlocked accounts until those cases can be distinguished from failed reads. A readout failure is a panel error, not a fourth achievement state. Do not infer unlocks from reaching a counter threshold.
+The current calls expose no read-success flag. The user explicitly authorized accepting any response with 0 to 77 earned achievements as valid account data; zero earned is a legitimate state (a fresh account), not an error. A response in which all 78 are earned is still rejected as a panel error until it can be distinguished from a constant failed read. Known limit: a failed read that reports every key as not earned is indistinguishable from a fresh account and shows every row as not earned. A readout failure is a panel error, not a fourth achievement state. Do not infer unlocks from reaching a counter threshold.
 
 **Incorrect:**
 
 ```text
-Treat constant false output as a verified zero-achievement account.
+Show a readout error for an account with zero earned achievements, or accept all 78 earned (or widen the range otherwise) without authorization.
 ```
 
 **Correct:**
 
 ```text
-Surface a readout error until failure can be distinguished from valid account data.
+Accept 0 to 77 earned; surface a readout error for all earned; disclose that the platform interpretation is unverified.
 ```
 
 ## 6. Preserve unknown progress

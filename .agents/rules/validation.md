@@ -180,7 +180,7 @@ Inspect failure branches, bounds and lifecycle ordering in the code that owns th
 
 **Impact: HIGH**
 
-Review the readout's handling of agreeing, inverted, missing, conflicting, constant and newly earned inputs, including accounts unrelated to development. Trace earned status with a reset counter and low difficulty.
+Review the readout's handling of agreeing, inverted, missing, conflicting, constant and newly earned inputs, including accounts unrelated to development. Zero earned is valid (authorized); all earned is rejected. Trace earned status with a reset counter and low difficulty.
 
 **Incorrect:**
 
@@ -191,7 +191,7 @@ Test only the developer account's current counters.
 **Correct:**
 
 ```text
-Cover inverted, missing, conflicting and constant reads plus newly earned and reset counters.
+Cover inverted, missing, conflicting and constant reads (zero earned accepted, all earned rejected) plus newly earned and reset counters.
 ```
 
 ## 10. Separate build readiness from runtime proof
