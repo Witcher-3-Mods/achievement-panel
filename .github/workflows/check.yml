@@ -1,6 +1,6 @@
 name: Check release build
 
-# Builds the installers and the release ZIP for every pull request, so a compile or packaging error shows up before
+# Builds and verifies both release ZIPs for every pull request, so a packaging error shows up before
 # a merge instead of in the release job. Nothing is published.
 on:
   pull_request:
@@ -24,18 +24,9 @@ jobs:
       - name: Generated localization is up to date
         run: |
           & ./tools/Build-Witcher3ModsLocales.ps1 -Check
-      - name: Build install.exe and uninstall.exe from their sources
+      - name: Package and verify the Automatic release ZIP (with install.cmd and uninstall.cmd)
         run: |
-          & ./tools/Build-Witcher3ModsInstallers.ps1 -OutputDirectory "$env:RUNNER_TEMP/installers" -Version 0.0.0
-      - name: Test install.exe and uninstall.exe against a fake game folder
-        # Installs, uninstalls from inside the installed mod folder (the way users run it), checks the 1/2 prompt, the
-        # self-removal and that a junction in the mod folder is never followed. Fails the job on the first wrong result.
-        timeout-minutes: 5
-        run: |
-          & ./tools/Test-Witcher3ModsInstallers.ps1 -InstallerDirectory "$env:RUNNER_TEMP/installers"
-      - name: Package and verify the Automatic release ZIP (with install.exe and uninstall.exe)
-        run: |
-          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Automatic -OutputPath "$env:RUNNER_TEMP/check-automatic.zip" -InstallerDirectory "$env:RUNNER_TEMP/installers"
-      - name: Package and verify the Manual release ZIP (no .exe)
+          & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Automatic -OutputPath "$env:RUNNER_TEMP/check-automatic.zip"
+      - name: Package and verify the Manual release ZIP (no scripts)
         run: |
           & ./tools/New-Witcher3ModsReleaseArchive.ps1 -Variant Manual -OutputPath "$env:RUNNER_TEMP/check-manual.zip"

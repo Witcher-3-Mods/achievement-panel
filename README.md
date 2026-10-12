@@ -35,17 +35,17 @@ Compatibility: the unlock interpretation was checked against Steam on the develo
 
 Each release has two ZIPs with the same mod:
 
-- **Automatic**: includes `install.exe` and `uninstall.exe`. The easy way on Windows.
-- **Manual**: no `.exe` files at all (nothing for an antivirus to flag). You copy the folder yourself, see [below](#install-or-update-by-hand).
+- **Automatic**: includes `install.cmd` and `uninstall.cmd`. The easy way on Windows.
+- **Manual**: no script files at all (nothing for an antivirus or a file host to flag). You copy the folder yourself, see [below](#install-or-update-by-hand).
 
 ## Install automatically (Windows)
 
 1. Close the game. Download the **Automatic** ZIP from the **Releases** page and extract it anywhere.
-2. In the extracted `modWitcher3ModsAchievementPanel` folder, double-click **`install.exe`**. It finds your Witcher 3 folder (Steam, GOG, Epic or the usual folders on every drive; it asks for the path if needed) and replaces any previous version, including one installed under an old misspelled folder name.
+2. In the extracted `modWitcher3ModsAchievementPanel` folder, double-click **`install.cmd`**. It finds your Witcher 3 folder (Steam, GOG, Epic or the usual folders on every drive; it asks for the path if needed) and replaces any previous version, including one installed under an old misspelled folder name.
 
-To remove the mod, double-click **`uninstall.exe`** (in the extracted folder or in `mods\modWitcher3ModsAchievementPanel`). It removes the mod folder and your saved pins (only the mod's section in the `*user.settings` files in `Documents\The Witcher 3`, after making a copy of each file it edits) and nothing else. Windows cannot delete a program while it runs, so when started from inside the mod folder it leaves that one file behind and asks how to finish: **1** to delete the folder yourself, **2** to let the program remove itself (some antivirus programs may warn about that).
+To remove the mod, double-click **`uninstall.cmd`** (in the extracted folder or in `mods\modWitcher3ModsAchievementPanel`). It removes the mod folder and your saved pins (only the mod's section in the `*user.settings` files in `Documents\The Witcher 3`, after making a copy of each file it edits) and nothing else.
 
-The `.exe` files are plain C# programs that run no PowerShell or other script. GitHub builds them from [`src/modWitcher3ModsAchievementPanel`](src/modWitcher3ModsAchievementPanel) (`Common.cs`, `Install.cs`, `Uninstall.cs`; build script: [`tools/Build-Witcher3ModsInstallers.ps1`](tools/Build-Witcher3ModsInstallers.ps1)), so you can read exactly what they do. They are not code-signed, so Windows SmartScreen or your antivirus may warn: choose **More info, Run anyway**, or use the Manual package.
+Both files are plain text, so you can open them in Notepad and read exactly what they do. Windows SmartScreen may warn about a downloaded script: choose **More info, Run anyway** if you trust it, or use the Manual package.
 
 ## Install or update by hand
 
